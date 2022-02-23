@@ -1,0 +1,9 @@
+/* eslint-disable-next-line no-unused-vars */
+const config = (() => {
+  return {
+    VUE_APP_TEST: '${VUE_APP_TEST}',
+    get(name) {
+      return this[name] || '';
+    },
+  };
+})();

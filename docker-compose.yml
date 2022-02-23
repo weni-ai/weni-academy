@@ -1,0 +1,11 @@
+version: '3.6'
+
+services:
+  academy-webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - VUE_APP_TEST=${VUE_APP_TEST}
+    ports:
+      - 80:80
