@@ -20,7 +20,7 @@
         <template slot="tab-panel-quarter"><Channles /></template>
       </unnnic-tab> -->
       <section
-        v-for="category in getCategories"
+        v-for="category in categories"
         :key="category"
         class="section__item"
       >
@@ -49,7 +49,7 @@
           class="section__item__list swiper"
           :options="swiperOption"
         >
-          <SwiperSlide href="" v-for="grade in getClasses" :key="grade.id">
+          <SwiperSlide href="" v-for="grade in classes" :key="grade.id">
             <a href="">
               <unnnic-card-data
                 :title="grade.title"
@@ -68,7 +68,7 @@
 // import Fluxs from '@/components/tabs/fluxsTab.vue';
 // import HumanCare from '@/components/tabs/humanCare.vue';
 // import Ia from '@/components/tabs/iaTab.vue';
-import { mapState, mapGetters } from "vuex";
+import { mapState } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
@@ -102,8 +102,6 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["getCategories", "getClasses"]),
-
     ...mapState({
       categories: (state) => state.Modules.module.categories,
       classes: (state) => state.Modules.module.categories[0]?.classes,
