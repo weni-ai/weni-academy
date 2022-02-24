@@ -1,15 +1,5 @@
 <template>
   <div class="listAllContainer">
-    <header>
-      <unnnic-breadcrumb
-        :crumbs="[
-          { name: 'One', path: 'One' },
-          { name: 'Two', path: 'Two' },
-          { name: 'Active', path: 'Active' },
-        ]"
-      />
-    </header>
-
     <main>
       <div>
         <!-- PROGRESS ITEM HERE -->
@@ -17,34 +7,32 @@
       </div>
 
       <ul class="course-list">
-        <Swiper>
-          <li v-for="course in courses" :key="course.id">
-            <SwiperSlide>
-              <router-link :to="`/${course.id}`">
-                <unnnic-card-data
-                  :title="course.title"
-                  :description="course.description"
-                  :score="course.rating"
-                  :info="`(${course.comments} comments)`"
-                  :checked="course.isComplete"
-                />
-              </router-link>
-            </SwiperSlide>
-          </li>
-        </Swiper>
+        <li v-for="course in courses" :key="course.id">
+          <router-link :to="`/${course.id}`">
+            <unnnic-card-data
+              :title="course.title"
+              :description="course.description"
+              :score="course.rating"
+              :info="`(${course.comments} comments)`"
+              :checked="course.isComplete"
+            />
+          </router-link>
+        </li>
       </ul>
 
-      <nav class="navigation">navigation here</nav>
+      <nav class="navigation">
+        <unnnic-pagination v-model="page" :value="1" :max="10" :show="5" />
+      </nav>
     </main>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "ListAll",
   data() {
     return {
+      page: 1,
       hasMovie: true,
       courses: [
         {

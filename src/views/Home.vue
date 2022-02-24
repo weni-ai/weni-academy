@@ -50,12 +50,13 @@
           :options="swiperOption"
         >
           <SwiperSlide href="" v-for="grade in classes" :key="grade.id">
-            <a href="">
+            {{category.id}}
+            <router-link :to="`/module/${category.id}/lession/${grade.id}`">
               <unnnic-card-data
                 :title="grade.title"
                 :description="grade.description"
               />
-            </a>
+            </router-link>
           </SwiperSlide>
         </Swiper>
       </section>

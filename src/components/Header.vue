@@ -1,17 +1,29 @@
 <template>
   <header class="unnnic-grid-span-12">
     <unnnicBreadcrumb
-      :crumbs="[
-        { name: 'One', path: 'One' },
-        { name: 'Two', path: 'Two' },
-        { name: 'Active', path: 'Active' },
-      ]"
+      :crumbs="breadcrumbs"
+      @crumbClick="handleCrumbClick"
     />
   </header>
 </template>
 
 <script>
-export default {};
+import { mapActions, mapState } from 'vuex';
+
+export default {
+  methods: {
+    ...mapActions(['removeBreadcrumb']),
+    handleCrumbClick(crumb) {
+      this.removeBreadcrumb(crumb)
+      this.$router.push(crumb.path)
+    },
+  },
+  computed: {
+    ...mapState({
+      breadcrumbs: (state) => state.Header.breadcrumb
+    })
+  }
+};
 </script>
 
 <style scoped lang="scss">

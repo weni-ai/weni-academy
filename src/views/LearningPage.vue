@@ -1,5 +1,5 @@
 <template>
-  <div class="T unnnic-grid-giant">
+  <div class="learning-page unnnic-grid-giant">
     <main class="unnnic-grid-span-12">
       <iframe
         v-if="hasMovie"
@@ -144,6 +144,10 @@ h2 {
   margin-top: $unnnic-spacing-stack-nano;
   font-size: $unnnic-font-size-title-sm;
   color: $unnnic-color-neutral-dark;
+}
+
+.learning-page {
+  margin-top: $unnnic-spacing-stack-lg;
 }
 
 .main-title {
