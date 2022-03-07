@@ -14,11 +14,11 @@ export default {
         "categories": [
           {
             "title": "categoria junior",
+            "id": 1,
             "classes": [
               {
                 "id": 1,
                 "title": "Primeira Classe",
-                "url_friendly_title": "first-class",
                 "category": 1,
                 "video": "https://www.youtube.com/embed/UXQ6GtieB8E",
                 "description":"Aula topper",

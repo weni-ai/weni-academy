@@ -1,6 +1,5 @@
 <template>
   <header class="unnnic-grid-span-12">
-    <pre>{{ breadcrumbs }}</pre>
     <unnnicBreadcrumb
       :crumbs="breadcrumbs"
       @crumbClick="handleCrumbClick"
@@ -9,14 +8,12 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   methods: {
-    ...mapActions(['removeBreadcrumb']),
     handleCrumbClick(crumb) {
-      this.removeBreadcrumb(crumb)
-      this.$router.push(crumb.path)
+      this.$router.push(crumb.path);
     },
   },
   computed: {

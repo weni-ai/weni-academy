@@ -1,5 +1,8 @@
 
 const actions = {
+  clearBreadcrumb({ commit }) {
+    commit('CLEAR_BREADCRUMB')
+  },
   addBreadcrumb({ commit }, breadcrumb) {
     commit('ADD_BREADCRUMB', breadcrumb)
   },
@@ -9,6 +12,7 @@ const actions = {
 }
 
 const mutations = {
+  CLEAR_BREADCRUMB: (state) => (state.breadcrumb = []),
   ADD_BREADCRUMB: (state, breadcrumb) => (state.breadcrumb = [...state.breadcrumb, breadcrumb]),
   REMOVE_BREADCRUMB: (state, breadcrumb) => {
     const hasBreadcrum = state.breadcrumb.findIndex(item => item.name === breadcrumb.name);
@@ -20,11 +24,7 @@ const mutations = {
 }
 
 const state = {
-  breadcrumb: [
-    { name: 'One', path: 'One' },
-    { name: 'TWO', path: 'TWO' },
-    { name: 'THREE', path: 'THREE' },
-  ],
+  breadcrumb: [],
 };
 
 export default {

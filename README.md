@@ -1,5 +1,11 @@
 # weni-academy
 
+## TO-DO
+- [ ] Documentation
+- [ ] Integrate to an API
+- [ ] Unit tests
+- [ ] Integrate to parent dash
+
 ## Project setup
 ```
 yarn install

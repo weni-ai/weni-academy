@@ -8,7 +8,14 @@
 
       <ul class="course-list">
         <li v-for="course in courses" :key="course.id">
-          <router-link :to="`/${course.id}`">
+          <router-link
+            :to="{
+              name: 'ClassPage',
+              params: {
+                id_class: course.id,
+              },
+            }"
+          >
             <unnnic-card-data
               :title="course.title"
               :description="course.description"

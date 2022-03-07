@@ -33,18 +33,72 @@ const router = new VueRouter({
 })
 
 router.afterEach(async (to) => {
-  if (to.name === 'ClassPage') {
-    /* to.params.id_class
-    to.params.module_id */
+  store.dispatch('clearBreadcrumb');
+  await store.dispatch('fetchModules');
+
+  const current = {
+    module: store.state.Modules.module,
+    category: null,
+    class: null,
   }
 
-  await store.dispatch('fetchModules');
-  
-  console.log('to', to, store.state.Modules.module.categories.find(category => category.url_frienly_title === to.params.module_id));
-  console.log(store.state.Modules)
+  const requires = [];
 
-  store.dispatch('addBreadcrumb', { name: 'One', path: 'One' });
-  store.dispatch('addBreadcrumb', { name: 'One', path: 'One' });
+  const breadcrumbs = [];
+
+  if (to.name === 'ClassesListAll') {
+    requires.push('category');
+  } else if (to.name === 'ClassPage') {
+    requires.push('category');
+    requires.push('class');
+  }
+
+  try {
+    if (requires.includes('category')) {
+      current.category = current.module?.categories.find(category => category.id === Number(to.params.module_id));
+
+      if (!current.category) {
+        throw new Error('CategoryNotFound');
+      }
+
+      breadcrumbs.push({
+        name: current.category.title,
+        path: {
+          name: 'ClassesListAll',
+          params: {
+            module_id: current.category.id,
+          },
+        }
+      });
+    }
+
+    if (requires.includes('class')) {
+      current.class = current.category?.classes.find(lesson => lesson.id === Number(to.params.id_class));
+
+      if (!current.class) {
+        throw new Error('ClassNotFound');
+      }
+
+      breadcrumbs.push({
+        name: current.class.title,
+        path: {
+          name: 'ClassPage',
+          params: {
+            id_class: current.class.id,
+            module_id: current.category.id,
+          },
+        }
+      });
+    }
+
+    breadcrumbs.forEach(breadcrumb => {
+      store.dispatch('addBreadcrumb', breadcrumb);
+    });
+  } catch (error) {
+    if (error.message === 'CategoryNotFound' || error.message === 'ClassNotFound') {
+      console.log('do something');
+    }
+  }
 })
 
 export default router
