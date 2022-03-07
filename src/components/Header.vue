@@ -1,5 +1,6 @@
 <template>
   <header class="unnnic-grid-span-12">
+    <pre>{{ breadcrumbs }}</pre>
     <unnnicBreadcrumb
       :crumbs="breadcrumbs"
       @crumbClick="handleCrumbClick"

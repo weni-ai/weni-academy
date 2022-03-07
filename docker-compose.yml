@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - VUE_APP_TEST=${VUE_APP_TEST}
+      - VUE_APP_BASE_API=${VUE_APP_BASE_API}
+      - VUE_APP_PARENT_DOMAIN=${VUE_APP_PARENT_DOMAIN}
     ports:
       - 80:80

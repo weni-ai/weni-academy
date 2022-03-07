@@ -20,16 +20,18 @@
         </li>
       </ul>
 
+      <!-- 
       <nav class="navigation">
         <unnnic-pagination v-model="page" :value="1" :max="10" :show="5" />
-      </nav>
+      </nav> 
+      -->
     </main>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ListAll",
+  name: "ListAllClasses",
   data() {
     return {
       page: 1,

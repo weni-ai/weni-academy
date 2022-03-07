@@ -27,7 +27,7 @@
         <div class="section__item__header">
           <h2>{{ category.title }}</h2>
           <div>
-            <a href="/">Ver tudo</a>
+            <router-link :to="{ name: 'ClassesListAll' }">Ver tudo</router-link>
             <unnnic-button-icon
               type="secondary"
               size="small"
@@ -50,8 +50,10 @@
           :options="swiperOption"
         >
           <SwiperSlide href="" v-for="grade in classes" :key="grade.id">
-            {{category.id}}
-            <router-link :to="`/module/${category.id}/lession/${grade.id}`">
+            {{ category.id }}
+            <router-link
+              :to="{ name: 'ClassPage', params: { id_class: grade.id } }"
+            >
               <unnnic-card-data
                 :title="grade.title"
                 :description="grade.description"

@@ -17,7 +17,8 @@ export default {
             "classes": [
               {
                 "id": 1,
-                "title": "classe",
+                "title": "Primeira Classe",
+                "url_friendly_title": "first-class",
                 "category": 1,
                 "video": "https://www.youtube.com/embed/UXQ6GtieB8E",
                 "description":"Aula topper",

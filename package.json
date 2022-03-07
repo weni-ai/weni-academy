@@ -12,6 +12,7 @@
     "@weni/unnnic-system": "^1.1.93",
     "axios": "^0.26.0",
     "core-js": "^3.6.5",
+    "logrocket": "^2.2.0",
     "swiper": "^6.8.4",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.1.1",
