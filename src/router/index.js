@@ -23,6 +23,22 @@ const routes = [
     path: '/module/:module_id/all',
     name: 'ClassesListAll',
     component: ClassesListAll
+  },
+  {
+    path: '/loginexternal/:token/',
+    name: 'externalLogin',
+    component: null,
+    beforeEnter: async (to, from, next) => {
+      const { token } = to.params;
+      store.dispatch('externalLogin', token.replace('+', ' '));
+      if (to.query.next) {
+        next(to.query.next);
+      } else {
+        next('/');
+
+        //TO-DO HANDLE ERROR
+      }
+    },
   }
 ]
 

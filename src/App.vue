@@ -22,8 +22,9 @@ export default {
   methods: {
     ...mapActions(["fetchModules"]),
   },
-  mounted() {
-    this.fetchModules();
+  async mounted() {
+    // await this.fetchModules();
+    console.log('2')
   },
 };
 </script>
