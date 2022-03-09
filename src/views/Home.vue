@@ -1,5 +1,7 @@
 <template>
   <div class="T unnnic-grid-giant">
+  Teste
+  <router-link :to="{ params: { module_id: 1 } }">Ir para o mod 1</router-link>
     <main class="unnnic-grid-span-12">
       <!-- TODO:
         <unnnic-tab initialTab="first" :tabs="['first', 'second', 'third', 'quarter']">
@@ -21,7 +23,7 @@
       </unnnic-tab> -->
       <section
         v-for="category in categories"
-        :key="category"
+        :key="category.id"
         class="section__item"
       >
         <div class="section__item__header">
@@ -49,10 +51,16 @@
           class="section__item__list swiper"
           :options="swiperOption"
         >
-          <SwiperSlide href="" v-for="grade in classes" :key="grade.id">
-            {{ category.id }}
+          <SwiperSlide
+            href=""
+            v-for="grade in category.class_set"
+            :key="grade.id"
+          >
             <router-link
-              :to="{ name: 'ClassPage', params: { id_class: grade.id } }"
+              :to="{
+                name: 'ClassPage',
+                params: { id_class: grade.id, id_category: category.id },
+              }"
             >
               <unnnic-card-data
                 :title="grade.title"
@@ -71,7 +79,7 @@
 // import Fluxs from '@/components/tabs/fluxsTab.vue';
 // import HumanCare from '@/components/tabs/humanCare.vue';
 // import Ia from '@/components/tabs/iaTab.vue';
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
@@ -96,7 +104,13 @@ export default {
     Swiper,
     SwiperSlide,
   },
+  async mounted() {
+    const { module_id } = this.$route.params;
+
+    await this.fetchSingleModule(module_id);
+  },
   methods: {
+    ...mapActions(["fetchSingleModule"]),
     backSlide() {
       this.$refs.mySwiperRef[0].$swiper.slidePrev();
     },
@@ -106,8 +120,9 @@ export default {
   },
   computed: {
     ...mapState({
-      categories: (state) => state.Modules.module.categories,
-      classes: (state) => state.Modules.module.categories[0]?.classes,
+      currentModule: (state) => state.Modules.currentModule,
+      categories: (state) => state.Modules.currentModule.category_set,
+      loading: (state) => state.Modules.loadingSingleModule,
     }),
   },
 };

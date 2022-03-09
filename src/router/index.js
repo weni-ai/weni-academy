@@ -15,14 +15,14 @@ const routes = [
     component: Home
   },
   {
-    path: '/module/:module_id/class/:id_class',
+    path: '/module/:module_id/category/:id_category/class/:id_class',
     name: 'ClassPage',
     component: ClassPage
   },
   {
     path: '/module/:module_id/all',
     name: 'ClassesListAll',
-    component: ClassesListAll
+    component: ClassesListAll,
   },
   {
     path: '/loginexternal/:token/',
@@ -31,6 +31,7 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const { token } = to.params;
       store.dispatch('externalLogin', token.replace('+', ' '));
+
       if (to.query.next) {
         next(to.query.next);
       } else {
@@ -49,8 +50,16 @@ const router = new VueRouter({
 })
 
 router.afterEach(async (to) => {
+
+  window.parent.postMessage(
+    {
+      event: 'changePathname',
+      pathname: window.location.pathname,
+    },
+    '*',
+  );
+
   store.dispatch('clearBreadcrumb');
-  await store.dispatch('fetchModules');
 
   const current = {
     module: store.state.Modules.module,

@@ -24,7 +24,6 @@ export default {
   },
   async mounted() {
     // await this.fetchModules();
-    console.log('2')
   },
 };
 </script>
