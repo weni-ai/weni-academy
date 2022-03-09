@@ -1,7 +1,8 @@
 /* eslint-disable-next-line no-unused-vars */
 const config = (() => {
   return {
-    VUE_APP_TEST: '${VUE_APP_TEST}',
+    VUE_APP_BASE_API: '${VUE_APP_BASE_API}',
+    VUE_APP_PARENT_DOMAIN: '${VUE_APP_PARENT_DOMAIN}'
     get(name) {
       return this[name] || '';
     },

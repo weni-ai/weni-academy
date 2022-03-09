@@ -10,7 +10,7 @@ import 'swiper/swiper-bundle.css'
 
 LogRocket.init('lqshel/test-weni-webapp', {
   mergeIframes: true,
-  parentDomain: process.env.VUE_APP_PARENT_DOMAIN,
+  parentDomain: config.get('VUE_APP_PARENT_DOMAIN'),
 });
 
 Vue.use(VueAwesomeSwiper)
