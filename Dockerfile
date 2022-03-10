@@ -27,4 +27,4 @@ ENTRYPOINT ["./docker-entrypoint.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]
 
-COPY config.js.tmpl /usr/share/nginx/html/academy/
+# COPY config.js.tmpl /usr/share/nginx/html/academy/

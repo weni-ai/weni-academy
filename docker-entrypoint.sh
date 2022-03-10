@@ -1,7 +1,7 @@
 #!/bin/sh
-
-if [ ! -f /usr/share/nginx/html/academy/config.js ] ; then
-	envsubst < /usr/share/nginx/html/academy/config.js.tmpl > /usr/share/nginx/html/academy/config.js
-fi
-
+JSON_STRING='window.configs = { \
+  "VUE_APP_BASE_API":"'"${VUE_APP_BASE_API}"'", \
+  "VUE_APP_PARENT_DOMAIN":"'"${VUE_APP_PARENT_DOMAIN}"'", \
+}'
+sed -i "s@// CONFIGURATIONS_PLACEHOLDER@${JSON_STRING}@" /usr/share/nginx/html/index.html
 exec "$@"
