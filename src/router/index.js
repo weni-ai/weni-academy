@@ -31,7 +31,7 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const { token } = to.params;
       store.dispatch('externalLogin', token.replace('+', ' '));
-
+      console.log(to.query)
       if (to.query.next) {
         next(to.query.next);
       } else {
@@ -49,7 +49,7 @@ const router = new VueRouter({
 })
 
 router.afterEach(async (to) => {
-
+  console.log(to)
   window.parent.postMessage(
     {
       event: 'changePathname',

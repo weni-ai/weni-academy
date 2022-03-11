@@ -8,9 +8,11 @@ import LogRocket from 'logrocket';
 // import style (>= Swiper 6.x)
 import 'swiper/swiper-bundle.css'
 
+import getEnv from './utils/env'
+
 LogRocket.init('lqshel/test-weni-webapp', {
   mergeIframes: true,
-  parentDomain: config.get('VUE_APP_PARENT_DOMAIN'),
+  parentDomain: getEnv('VUE_APP_PARENT_DOMAIN'),
 });
 
 Vue.use(VueAwesomeSwiper)
