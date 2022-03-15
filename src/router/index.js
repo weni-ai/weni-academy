@@ -20,7 +20,7 @@ const routes = [
     component: ClassPage
   },
   {
-    path: '/module/:module_id/all',
+    path: '/module/:module_id/category/:id_category',
     name: 'ClassesListAll',
     component: ClassesListAll,
   },
@@ -31,7 +31,9 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       const { token } = to.params;
       store.dispatch('externalLogin', token.replace('+', ' '));
-      console.log(to.query)
+
+      await store.dispatch('fetchModules');
+
       if (to.query.next) {
         next(to.query.next);
       } else {
@@ -48,8 +50,7 @@ const router = new VueRouter({
   routes
 })
 
-router.afterEach(async (to) => {
-  console.log(to)
+router.afterEach(async () => {
   window.parent.postMessage(
     {
       event: 'changePathname',
@@ -57,72 +58,6 @@ router.afterEach(async (to) => {
     },
     '*',
   );
-
-  store.dispatch('clearBreadcrumb');
-
-  const current = {
-    module: store.state.Modules.module,
-    category: null,
-    class: null,
-  }
-
-  const requires = [];
-
-  const breadcrumbs = [];
-
-  if (to.name === 'ClassesListAll') {
-    requires.push('category');
-  } else if (to.name === 'ClassPage') {
-    requires.push('category');
-    requires.push('class');
-  }
-
-  try {
-    if (requires.includes('category')) {
-      current.category = current.module?.categories.find(category => category.id === Number(to.params.module_id));
-
-      if (!current.category) {
-        throw new Error('CategoryNotFound');
-      }
-
-      breadcrumbs.push({
-        name: current.category.title,
-        path: {
-          name: 'ClassesListAll',
-          params: {
-            module_id: current.category.id,
-          },
-        }
-      });
-    }
-
-    if (requires.includes('class')) {
-      current.class = current.category?.classes.find(lesson => lesson.id === Number(to.params.id_class));
-
-      if (!current.class) {
-        throw new Error('ClassNotFound');
-      }
-
-      breadcrumbs.push({
-        name: current.class.title,
-        path: {
-          name: 'ClassPage',
-          params: {
-            id_class: current.class.id,
-            module_id: current.category.id,
-          },
-        }
-      });
-    }
-
-    breadcrumbs.forEach(breadcrumb => {
-      store.dispatch('addBreadcrumb', breadcrumb);
-    });
-  } catch (error) {
-    if (error.message === 'CategoryNotFound' || error.message === 'ClassNotFound') {
-      console.log('do something');
-    }
-  }
 })
 
 export default router

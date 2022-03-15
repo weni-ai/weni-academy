@@ -1,7 +1,5 @@
 <template>
   <div class="T unnnic-grid-giant">
-  Teste
-  <router-link :to="{ params: { module_id: 1 } }">Ir para o mod 1</router-link>
     <main class="unnnic-grid-span-12">
       <!-- TODO:
         <unnnic-tab initialTab="first" :tabs="['first', 'second', 'third', 'quarter']">
@@ -22,14 +20,14 @@
         <template slot="tab-panel-quarter"><Channles /></template>
       </unnnic-tab> -->
       <section
-        v-for="category in categories"
+        v-for="category in currentModule.category_set"
         :key="category.id"
         class="section__item"
       >
         <div class="section__item__header">
           <h2>{{ category.title }}</h2>
           <div>
-            <router-link :to="{ name: 'ClassesListAll' }">Ver tudo</router-link>
+            <router-link :to="{ name: 'ClassesListAll', params: { id_category: category.id } }">Ver tudo</router-link>
             <unnnic-button-icon
               type="secondary"
               size="small"
@@ -79,7 +77,7 @@
 // import Fluxs from '@/components/tabs/fluxsTab.vue';
 // import HumanCare from '@/components/tabs/humanCare.vue';
 // import Ia from '@/components/tabs/iaTab.vue';
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 export default {
@@ -119,9 +117,8 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(['currentModule']),
     ...mapState({
-      currentModule: (state) => state.Modules.currentModule,
-      categories: (state) => state.Modules.currentModule.category_set,
       loading: (state) => state.Modules.loadingSingleModule,
     }),
   },

@@ -4,7 +4,7 @@ import getters from './getters';
 
 const state = {
   loading: null,
-  currentModule: {},
+  modules: [],
 };
 export default {
   state,

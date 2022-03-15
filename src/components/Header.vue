@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   methods: {
@@ -17,9 +17,7 @@ export default {
     },
   },
   computed: {
-    ...mapState({
-      breadcrumbs: (state) => state.Header.breadcrumb
-    })
+    ...mapGetters(['breadcrumbs']),
   }
 };
 </script>

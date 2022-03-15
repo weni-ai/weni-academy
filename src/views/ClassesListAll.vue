@@ -3,11 +3,11 @@
     <main>
       <div>
         <!-- PROGRESS ITEM HERE -->
-        <h1>Noções Básicas</h1>
+        <h1>{{ currentCategory.title }}</h1>
       </div>
 
       <ul class="course-list">
-        <li v-for="course in courses" :key="course.id">
+        <li v-for="course in currentCategory.class_set" :key="course.id">
           <router-link
             :to="{
               name: 'ClassPage',
@@ -20,7 +20,7 @@
               :title="course.title"
               :description="course.description"
               :score="course.rating"
-              :info="`(${course.comments} comments)`"
+              :info="course.comments && `(${course.comments} comments)`"
               :checked="course.isComplete"
             />
           </router-link>
@@ -37,93 +37,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "ListAllClasses",
   data() {
     return {
       page: 1,
       hasMovie: true,
-      courses: [
-        {
-          id: 1,
-          title: "Noções Básicas",
-          description:
-            "Criando um fluxo básico para coleta de dados e engajamento, entendendo os princípios.",
-          isComplete: false,
-          rating: "5.0",
-          comments: 2,
-        },
-        {
-          id: 2,
-          title: "Conhecendo o editor",
-          description:
-            "Conheça as funcionalidades do editor de fluxos para facilitar a criação da sua coleta de dados.",
-          isComplete: true,
-          rating: "4.6",
-          comments: 12,
-        },
-        {
-          id: 3,
-          title: "Incluindo comentários",
-          description: "Realize comentários relevantes em seus fluxos.",
-          isComplete: false,
-          rating: "4.1",
-          comments: 15,
-        },
-        {
-          id: 4,
-          title: "Noções Básicas",
-          description:
-            "Criando um fluxo básico para coleta de dados e engajamento, entendendo os princípios.",
-          isComplete: false,
-          rating: "5.0",
-          comments: 2,
-        },
-        {
-          id: 5,
-          title: "Conhecendo o editor",
-          description:
-            "Conheça as funcionalidades do editor de fluxos para facilitar a criação da sua coleta de dados.",
-          isComplete: true,
-          rating: "4.6",
-          comments: 12,
-        },
-        {
-          id: 6,
-          title: "Incluindo comentários",
-          description: "Realize comentários relevantes em seus fluxos.",
-          isComplete: false,
-          rating: "4.1",
-          comments: 15,
-        },
-        {
-          id: 7,
-          title: "Noções Básicas",
-          description:
-            "Criando um fluxo básico para coleta de dados e engajamento, entendendo os princípios.",
-          isComplete: false,
-          rating: "5.0",
-          comments: 2,
-        },
-        {
-          id: 8,
-          title: "Conhecendo o editor",
-          description:
-            "Conheça as funcionalidades do editor de fluxos para facilitar a criação da sua coleta de dados.",
-          isComplete: true,
-          rating: "4.6",
-          comments: 12,
-        },
-        {
-          id: 9,
-          title: "Incluindo comentários",
-          description: "Realize comentários relevantes em seus fluxos.",
-          isComplete: false,
-          rating: "4.1",
-          comments: 15,
-        },
-      ],
     };
+  },
+
+  computed: {
+    ...mapGetters(['currentCategory']),
   },
 };
 </script>

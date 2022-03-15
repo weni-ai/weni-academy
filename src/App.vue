@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import "@weni/unnnic-system";
 import Header from "@/components/Header";
 export default {
@@ -15,15 +15,10 @@ export default {
     Header,
   },
   computed: {
+    ...mapGetters(['currentModule']),
     currentRouteName() {
       return this.$route.name;
     },
-  },
-  methods: {
-    ...mapActions(["fetchModules"]),
-  },
-  async mounted() {
-    // await this.fetchModules();
   },
 };
 </script>

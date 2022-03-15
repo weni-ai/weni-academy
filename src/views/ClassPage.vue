@@ -4,8 +4,8 @@
       <iframe
         v-if="hasMovie"
         class="i"
-        :src="data.video"
-        :title="data.title"
+        :src="currentClass.video"
+        :title="currentClass.title"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
@@ -13,8 +13,8 @@
 
       <div class="main-title">
         <div class="title">
-          <h1>{{ data.title }}</h1>
-          <h3>{{ data.description }}</h3>
+          <h1>{{ currentClass.title }}</h1>
+          <h3>{{ currentClass.description }}</h3>
         </div>
         <!-- 
         TODO:
@@ -82,20 +82,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "Home",
   data() {
     return {
       hasMovie: true,
-      data: {
-        title: "class test",
-        category: {
-          title: "test category",
-          module: { title: "title test", description: "module to test app" },
-        },
-        video: "https://www.youtube.com/embed/pWeQGcLscx8",
-        description: "test class",
-      },
       text: `<h1>Titulo</h1>\r\n\r\n<p>sdads asdas</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porta sagittis ligula at egestas. Vivamus vestibulum diam sit amet massa viverra, quis dapibus diam pellentesque. Pellentesque fermentum efficitur lorem sit amet sollicitudin. Sed magna velit, pellentesque sit amet aliquet quis, dapibus vitae erat. Nullam imperdiet mollis odio eu ultrices. Duis imperdiet volutpat dolor, vitae imperdiet turpis elementum at. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut ornare nunc.</p>\r\n\r\n<p>Sed quam lorem, ultricies vitae sapien a, vehicula malesuada arcu. Phasellus luctus lobortis enim eget consequat. Praesent mattis quam urna, tempor ornare sapien tincidunt ac. Pellentesque consectetur volutpat velit vel tincidunt. Vestibulum vestibulum fringilla malesuada. Curabitur sit amet ex eu nunc feugiat efficitur. Morbi hendrerit ipsum sed neque accumsan, ut ultricies turpis commodo. Cras dapibus nisi vel interdum laoreet. Sed varius, arcu eu finibus imperdiet, ligula eros luctus augue, quis feugiat justo magna non enim.</p>\r\n\r\n<p>Sed eget bibendum diam, nec vehicula augue. Quisque consectetur commodo finibus. Aenean commodo ante nec tempus auctor. Aenean vel aliquet magna. Mauris aliquam odio sit amet rhoncus ultricies. Praesent lobortis, enim a placerat gravida, dolor ante suscipit libero, ac aliquet dui tellus vitae magna. Fusce ut fermentum urna. Integer nunc nunc, volutpat porttitor tincidunt condimentum, blandit eget turpis. Sed pharetra scelerisque laoreet. Nulla facilisi. Aliquam ultrices non magna sit amet mattis. Sed feugiat dui at lacus finibus, sed tincidunt lorem fermentum. Curabitur molestie pharetra rhoncus. Etiam egestas nunc sed tortor dapibus feugiat vel ac felis.</p>\r\n\r\n<p>&nbsp;</p>`,
       comments: [
         {
@@ -124,6 +117,10 @@ export default {
         },
       ],
     };
+  },
+
+  computed: {
+    ...mapGetters(['currentClass']),
   },
 };
 </script>
