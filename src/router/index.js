@@ -10,6 +10,15 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    redirect: {
+      name: 'Home',
+      params: {
+        module_id: 1,
+      },
+    },
+  },
+  {
     path: '/module/:module_id',
     name: 'Home',
     component: Home
