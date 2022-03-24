@@ -61,6 +61,7 @@
               }"
             >
               <unnnic-card-data
+                class="card"
                 :title="grade.title"
                 :description="grade.description"
               />
@@ -161,6 +162,10 @@ export default {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: $unnnic-spacing-stack-md;
+
+    .card {
+      height: 100%;
+    }
   }
 }
 </style>
