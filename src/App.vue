@@ -77,4 +77,8 @@ a:active {
 a:visited {
   color: inherit;
 }
+
+.card {
+  height: 100%;
+}
 </style>
