@@ -1867,14 +1867,16 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@weni/unnnic-system@^1.1.93":
-  version "1.1.93"
-  resolved "https://registry.yarnpkg.com/@weni/unnnic-system/-/unnnic-system-1.1.93.tgz#bef988556f388a7aa7a85454471639320a612ead"
-  integrity sha512-Lwo5gfwesKKCeGhA7sEfiMpiAoJng0W1FgKWBXLbISvDnyXC6xdKM8/+0pT9H/YOxWMBJ/3xNLyW2G4pre+m4g==
+"@weni/unnnic-system@^1.1.111":
+  version "1.1.111"
+  resolved "https://registry.yarnpkg.com/@weni/unnnic-system/-/unnnic-system-1.1.111.tgz#90b685d3a2e6c32d69f9c63bd5f1a0c9920fdb42"
+  integrity sha512-zO8HrC9kRQr/1JWJNHMU3IjjyH+8N/3uTdRxDrLz94GMkpQlDgt6u4+42hH3SPuCgmyr+jxgkzracOn/FIhO9g==
   dependencies:
     core-js "^3.6.5"
+    moment "^2.29.1"
     v-click-outside "^3.1.2"
     vue "^2.6.11"
+    vue-i18n "8"
     vue-the-mask "^0.11.1"
 
 "@xtuc/ieee754@^1.2.0":
@@ -7117,6 +7119,11 @@ mkdirp@0.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@^0.5.3, mkdir
   dependencies:
     minimist "^1.2.5"
 
+moment@^2.29.1:
+  version "2.29.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.2.tgz#00910c60b20843bcba52d37d58c628b47b1f20e4"
+  integrity sha512-UgzG4rvxYpN15jgCmVJwac49h9ly9NurikMWGPdVxm8GZD6XjkKPxDTjQQ43gtGgnV3X0cAyWDdP2Wexoquifg==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -10370,6 +10377,11 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
+
+vue-i18n@8:
+  version "8.27.1"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.27.1.tgz#fe660f6c14793ae404d6a715875d772594a3324f"
+  integrity sha512-lWrGm4F25qReJ7XxSnFVb2h3PfW54ldnM4C+YLBGGJ75+Myt/kj4hHSTKqsyDLamvNYpvINMicSOdW+7yuqgIQ==
 
 vue-jest@^3.0.5:
   version "3.0.7"

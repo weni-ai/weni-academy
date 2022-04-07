@@ -128,11 +128,15 @@ export default {
 
 <style scoped lang="scss">
 .section__item {
+
+  &:nth-child(1){
+      margin-top: $unnnic-inline-lg;
+  }
+
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: $unnnic-inline-lg 0 $unnnic-inline-md;
 
     h2 {
       font: $unnnic-font-size-title-sm $unnnic-font-family-secondary;
@@ -162,6 +166,8 @@ export default {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: $unnnic-spacing-stack-md;
+
+    padding: $unnnic-inline-lg 0 $unnnic-inline-md;
 
     .card {
       height: 100%;
