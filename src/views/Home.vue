@@ -20,7 +20,7 @@
         <template slot="tab-panel-quarter"><Channles /></template>
       </unnnic-tab> -->
       <section
-        v-for="category in currentModule.category_set"
+        v-for="(category, index) in currentModule.category_set"
         :key="category.id"
         class="section__item"
       >
@@ -33,14 +33,14 @@
               size="small"
               icon="arrow-left-1-1"
               class=".swiper-button-prev"
-              @click="backSlide"
+              @click="backSlide(index)"
             />
             <unnnic-button-icon
               type="secondary"
               size="small"
               icon="arrow-right-1-1"
               class=".swiper-button-next"
-              @click="nextSlide"
+              @click="nextSlide(index)"
             />
           </div>
         </div>
@@ -110,11 +110,11 @@ export default {
   },
   methods: {
     ...mapActions(["fetchSingleModule"]),
-    backSlide() {
-      this.$refs.mySwiperRef[0].$swiper.slidePrev();
+    backSlide(index) {
+      this.$refs.mySwiperRef[index].$swiper.slidePrev();
     },
-    nextSlide() {
-      this.$refs.mySwiperRef[0].$swiper.slideNext();
+    nextSlide(index) {
+      this.$refs.mySwiperRef[index].$swiper.slideNext();
     },
   },
   computed: {
