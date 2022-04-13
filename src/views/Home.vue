@@ -64,6 +64,7 @@
                 class="card"
                 :title="grade.title"
                 :description="grade.description"
+                :checked="grade.watched.watched"
               />
             </router-link>
           </SwiperSlide>

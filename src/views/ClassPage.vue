@@ -23,16 +23,21 @@
           <h1>COMMENTS</h1>
           <h3>HERE</h3>
         </div>
+        
       --></div>
-
-      <!-- 
-      TODO:  
       <unnnic-tab initialTab="first" :tabs="['first']">
         <template slot="tab-head-first">Visão geral</template>
         <template slot="tab-panel-first">
-          <div v-html="text" />
+          <unnnicSwitch
+            size="medium"
+            textRight="Marcar aprendizado como concluído"
+            @input="
+              toggleCheckClass({ classID: currentClass.id, value: $event })
+            "
+            v-model="currentClass.watched.watched"
+          />
         </template>
-        <template slot="tab-head-second">Comentários</template>
+        <!-- <template slot="tab-head-second">Comentários</template>
         <template slot="tab-panel-second">
           <unnnic-comment
             v-for="comment in comments"
@@ -43,10 +48,10 @@
             :avatar="comment.avatar"
           >
           </unnnic-comment>
-        </template> 
-      </unnnic-tab>-->
+        </template> -->
+      </unnnic-tab>
     </main>
-<!-- 
+    <!-- 
   TODO:
     <aside class="unnnic-grid-span-4">
       <div class="card-default comments"></div>
@@ -82,7 +87,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -119,8 +124,12 @@ export default {
     };
   },
 
+  methods: {
+    ...mapActions(["toggleCheckClass"]),
+  },
+
   computed: {
-    ...mapGetters(['currentClass']),
+    ...mapGetters(["currentClass"]),
   },
 };
 </script>

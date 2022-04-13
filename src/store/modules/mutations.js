@@ -2,7 +2,7 @@ export default {
   MODULES_REQUEST: (state) => (state.loadingModules = true),
   MODULES__SUCCESS: (state, modules) => {
     state.loadingModules = false;
-    state.modules = modules 
+    state.modules = modules
   },
   MODULES_ERROR: (state, profileError) => {
     state.error = profileError;
@@ -11,13 +11,27 @@ export default {
   SINGLE_MODULE_REQUEST: (state) => (state.loadingSingleModule = true),
   SINGLE_MODULE__SUCCESS: (state, module) => {
     state.loadingSingleModule = false;
-    state.currentModule = module 
+    state.currentModule = module
   },
   SINGLE_MODULE_ERROR: (state, profileError) => {
     state.error = profileError;
     state.loadingSingleModule = false;
   },
-  SET_CURRENT_MODULE: (state, module) =>{
+  SET_CURRENT_MODULE: (state, module) => {
     state.currentModule = module;
-  }
+  },
+
+  //CLASS
+  TOGGLE_CHECK_CLASS_REQUEST: (state, { value, getters }) => {
+    getters.currentClass.watched.watched = value;
+    state.loadingToggleCurrentClass = true;
+  },
+  TOGGLE_CHECK_CLASS__SUCCESS: (state) => {
+    state.loadingToggleCurrentClass = false;
+  },
+  TOGGLE_CHECK_CLASS_ERROR: (state, { error, getters, value }) => {
+    state.error = error;
+    state.loadingSingleModule = false;
+    getters.currentClass.watched.watched = !value;
+  },
 }
