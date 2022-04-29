@@ -16,6 +16,15 @@
           <h1>{{ currentClass.title }}</h1>
           <h3>{{ currentClass.description }}</h3>
         </div>
+
+        <unnnicSwitch
+            size="medium"
+            textRight="Marcar aprendizado como concluído"
+            @input="
+              toggleCheckClass({ classID: currentClass.id, value: $event })
+            "
+            v-model="currentClass.watched.watched"
+          />
         <!-- 
         TODO:
 
@@ -25,18 +34,11 @@
         </div>
         
       --></div>
-      <unnnic-tab initialTab="first" :tabs="['first']">
+      <!-- <unnnic-tab initialTab="first" :tabs="['first']">
         <template slot="tab-head-first">Visão geral</template>
         <template slot="tab-panel-first">
-          <unnnicSwitch
-            size="medium"
-            textRight="Marcar aprendizado como concluído"
-            @input="
-              toggleCheckClass({ classID: currentClass.id, value: $event })
-            "
-            v-model="currentClass.watched.watched"
-          />
-        </template>
+          
+        </template> -->
         <!-- <template slot="tab-head-second">Comentários</template>
         <template slot="tab-panel-second">
           <unnnic-comment
@@ -49,7 +51,7 @@
           >
           </unnnic-comment>
         </template> -->
-      </unnnic-tab>
+      <!-- </unnnic-tab> -->
     </main>
     <!-- 
   TODO:
@@ -164,8 +166,7 @@ h2 {
   margin: $unnnic-spacing-stack-md 0;
 
   .title {
-    width: 100%;
-    max-width: 80%;
+    /* width: 100%; */
     margin-right: $unnnic-spacing-stack-sm;
   }
 
