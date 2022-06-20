@@ -21,7 +21,7 @@
               :description="course.description"
               :score="course.rating"
               :info="course.comments && `(${course.comments} comments)`"
-              :checked="course.isComplete"
+              :checked="course.watched.watched"
             />
           </router-link>
         </li>

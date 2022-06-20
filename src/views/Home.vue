@@ -20,7 +20,7 @@
         <template slot="tab-panel-quarter"><Channles /></template>
       </unnnic-tab> -->
       <section
-        v-for="category in currentModule.category_set"
+        v-for="(category, index) in currentModule.category_set"
         :key="category.id"
         class="section__item"
       >
@@ -33,14 +33,14 @@
               size="small"
               icon="arrow-left-1-1"
               class=".swiper-button-prev"
-              @click="backSlide"
+              @click="backSlide(index)"
             />
             <unnnic-button-icon
               type="secondary"
               size="small"
               icon="arrow-right-1-1"
               class=".swiper-button-next"
-              @click="nextSlide"
+              @click="nextSlide(index)"
             />
           </div>
         </div>
@@ -61,8 +61,10 @@
               }"
             >
               <unnnic-card-data
+                class="card"
                 :title="grade.title"
                 :description="grade.description"
+                :checked="grade.watched.watched"
               />
             </router-link>
           </SwiperSlide>
@@ -109,11 +111,11 @@ export default {
   },
   methods: {
     ...mapActions(["fetchSingleModule"]),
-    backSlide() {
-      this.$refs.mySwiperRef[0].$swiper.slidePrev();
+    backSlide(index) {
+      this.$refs.mySwiperRef[index].$swiper.slidePrev();
     },
-    nextSlide() {
-      this.$refs.mySwiperRef[0].$swiper.slideNext();
+    nextSlide(index) {
+      this.$refs.mySwiperRef[index].$swiper.slideNext();
     },
   },
   computed: {
@@ -127,11 +129,15 @@ export default {
 
 <style scoped lang="scss">
 .section__item {
+
+  &:nth-child(1){
+      margin-top: $unnnic-inline-lg;
+  }
+
   &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: $unnnic-inline-lg 0 $unnnic-inline-md;
 
     h2 {
       font: $unnnic-font-size-title-sm $unnnic-font-family-secondary;
@@ -161,6 +167,12 @@ export default {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: $unnnic-spacing-stack-md;
+
+    padding: $unnnic-inline-lg 0 $unnnic-inline-md;
+
+    .card {
+      height: 100%;
+    }
   }
 }
 </style>

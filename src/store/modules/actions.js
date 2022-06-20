@@ -23,6 +23,18 @@ export default {
     }
   },
 
+  async toggleCheckClass({ commit, getters }, {classID, value}) {
+    commit('TOGGLE_CHECK_CLASS_REQUEST', { value, getters });
+    try {
+      await api.patch(`classes/${classID}/update_watched/`, {
+        watched: value
+      });
+      commit('TOGGLE_CHECK_CLASS__SUCCESS');
+    } catch (error) {
+      commit('TOGGLE_CHECK_CLASS_ERROR', { error, getters, value });
+    }
+  }
+
   // setCurrentModule({ commit }, moduleID){
 
   //   commit('SET_CURRENT_MODULE', module)
