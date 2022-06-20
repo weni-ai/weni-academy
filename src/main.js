@@ -24,3 +24,74 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+function enableLinkTranslations() {
+  let connectBaseURL = '';
+
+  function translateAllLinks() {
+    if (!connectBaseURL) {
+      return;
+    }
+    const url = new URL(connectBaseURL);
+    document.querySelectorAll('a[href]').forEach((link) => {
+      const internalHref =
+        link.getAttribute('internal-href') || link.getAttribute('href');
+      if (
+        ['http://', 'https://'].some((initial) =>
+          internalHref.startsWith(initial)
+        )
+      ) {
+        return;
+      }
+      const dashHref = connectBaseURL + internalHref;
+      if (link.translateLinkConnect) {
+        if (link.getAttribute('href') === dashHref) {
+          return;
+        }
+        link.removeEventListener('click', link.translateLinkConnect);
+      }
+      link.setAttribute('internal-href', internalHref);
+      link.setAttribute('href', dashHref);
+      link.addEventListener(
+        'click',
+        (link.translateLinkConnect = () => {
+          if (link.getAttribute('target') !== '_blank') {
+            link.setAttribute('href', internalHref);
+            setTimeout(() => {
+              link.setAttribute('href', dashHref);
+            }, 0);
+          }
+        })
+      );
+    });
+  }
+  function initializeObserver() {
+    const targetNode = document.getElementById('pageBody');
+    const config = { attributes: true, childList: true, subtree: true };
+    const callback = function (mutationList, observer) {
+      mutationList.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          translateAllLinks();
+        }
+      });
+    };
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+  }
+  window.addEventListener('message', (event) => {
+    const eventName = event.data && event.data.event;
+    if (eventName === 'setConnectBaseURL') {
+      connectBaseURL = event.data.connectBaseURL;
+      translateAllLinks();
+      initializeObserver();
+    }
+  });
+  window.parent.postMessage(
+    {
+      event: 'getConnectBaseURL',
+    },
+    '*'
+  );
+}
+
+enableLinkTranslations();
