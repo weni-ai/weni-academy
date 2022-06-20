@@ -32,7 +32,6 @@ function enableLinkTranslations() {
     if (!connectBaseURL) {
       return;
     }
-    const url = new URL(connectBaseURL);
     document.querySelectorAll('a[href]').forEach((link) => {
       const internalHref =
         link.getAttribute('internal-href') || link.getAttribute('href');
@@ -68,7 +67,7 @@ function enableLinkTranslations() {
   function initializeObserver() {
     const targetNode = document.getElementById('pageBody');
     const config = { attributes: true, childList: true, subtree: true };
-    const callback = function (mutationList, observer) {
+    const callback = function (mutationList) {
       mutationList.forEach((mutation) => {
         if (mutation.type === 'childList') {
           translateAllLinks();
