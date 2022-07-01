@@ -19,6 +19,7 @@
         <template slot="tab-head-quarter">Canais</template>
         <template slot="tab-panel-quarter"><Channles /></template>
       </unnnic-tab> -->
+      teste
       <section
         v-for="(category, index) in currentModule.category_set"
         :key="category.id"
