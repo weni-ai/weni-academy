@@ -23,7 +23,7 @@ new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#pageBody')
+}).$mount('#app')
 
 function enableLinkTranslations() {
   let connectBaseURL = '';
@@ -65,7 +65,7 @@ function enableLinkTranslations() {
     });
   }
   function initializeObserver() {
-    const targetNode = document.getElementById('pageBody');
+    const targetNode = document.getElementById('app');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationList) {
       mutationList.forEach((mutation) => {
