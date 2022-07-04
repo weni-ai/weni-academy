@@ -65,7 +65,7 @@ function enableLinkTranslations() {
     });
   }
   function initializeObserver() {
-    const targetNode = document.getElementById('app');
+    const targetNode = document.getElementById('pageBody');
     const config = { attributes: true, childList: true, subtree: true };
     const callback = function (mutationList) {
       mutationList.forEach((mutation) => {
