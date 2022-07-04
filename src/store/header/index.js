@@ -8,6 +8,12 @@ const getters = {
 
     if (['Home', 'ClassesListAll', 'ClassPage'].includes(name)) {
       breadcrumbs.push({
+        name: "Temas",
+        path: {
+          name: 'Onboarding',
+        }
+      });
+      breadcrumbs.push({
         name: store.getters.currentModule?.title,
         path: {
           name: 'Home',

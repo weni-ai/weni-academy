@@ -19,12 +19,14 @@
         <template slot="tab-head-quarter">Canais</template>
         <template slot="tab-panel-quarter"><Channles /></template>
       </unnnic-tab> -->
+      <Banner :bgGradient="colors[modules.indexOf(currentModule) % colors.length]" :currentModule="currentModule" expanded />
       <section
         v-for="(category, index) in currentModule.category_set"
         :key="category.id"
         class="section__item"
       >
         <div class="section__item__header">
+
           <h2>{{ category.title }}</h2>
           <div>
             <router-link :to="{ name: 'ClassesListAll', params: { id_category: category.id } }">Ver tudo</router-link>
@@ -81,6 +83,7 @@
 // import Ia from '@/components/tabs/iaTab.vue';
 import { mapActions, mapGetters, mapState } from "vuex";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import Banner from "@/components/Banner.vue";
 
 export default {
   name: "Home",
@@ -94,6 +97,16 @@ export default {
           prevEl: ".swiper-button-prev",
         },
       },
+      colors: [
+        "green-yellow",
+        "yellow-pink",
+        "pink-blue",
+        "red-blue",
+        "red-blue",
+        "pink-blue",
+        "yellow-pink",
+        "green-yellow",
+      ],
     };
   },
   components: {
@@ -103,6 +116,7 @@ export default {
     // Ia,
     Swiper,
     SwiperSlide,
+    Banner,
   },
   async mounted() {
     const { module_id } = this.$route.params;
@@ -122,6 +136,7 @@ export default {
     ...mapGetters(['currentModule']),
     ...mapState({
       loading: (state) => state.Modules.loadingSingleModule,
+      modules: (state) => state.Modules.modules,
     }),
   },
 };
