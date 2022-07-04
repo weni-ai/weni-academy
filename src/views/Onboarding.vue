@@ -2,7 +2,7 @@
   <main class="onboarding">
     <div class="onboarding__header unnnic-grid-giant">
       <div class="texts unnnic-grid-span-7">
-        <h1>Filipe, o que você quer aprender hoje?</h1>
+        <h1>{{ name }}, o que você quer aprender hoje?</h1>
         <p>
           Abaixo estão listadas situações que são possíveis de serem criados com
           os nossos bots e fluxos. escolha o que for de seu interesse para
@@ -12,9 +12,15 @@
     </div>
 
     <ul class="onboarding__list unnnic-grid-giant">
-      
-      <li v-for="(current, index) in modules" :key="index" class="unnnic-grid-span-3">
-        <Banner :bgGradient="colors[index  % colors.length]" :currentModule="current" />
+      <li
+        v-for="(current, index) in modules"
+        :key="index"
+        class="unnnic-grid-span-3"
+      >
+        <Banner
+          :bgGradient="colors[index % colors.length]"
+          :currentModule="current"
+        />
       </li>
     </ul>
   </main>
@@ -22,7 +28,7 @@
 
 <script>
 import Banner from "@/components/Banner.vue";
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -36,12 +42,27 @@ export default {
         "yellow-pink",
         "green-yellow",
       ],
+      name: "",
     };
   },
   computed: {
     ...mapState({
-      modules: state => state.Modules.modules,
-    })
+      modules: (state) => state.Modules.modules,
+    }),
+  },
+  mounted() {
+    window.addEventListener("message", (event) => {
+      if (event.data?.event === "userInfo") {
+        this.name = event.data.first_name;
+      }
+    });
+
+    window.parent.postMessage(
+      {
+        event: "getUserInfo",
+      },
+      "*"
+    );
   },
   components: {
     Banner,
