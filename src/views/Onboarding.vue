@@ -52,7 +52,9 @@ export default {
   },
   mounted() {
     window.addEventListener("message", (event) => {
-      this.name = event.data.first_name;
+      if (event.data?.event === "userInfo") {
+        this.name = event.data.first_name;
+      }
     });
 
     window.parent.postMessage(
