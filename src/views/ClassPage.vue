@@ -17,6 +17,26 @@
           <h3>{{ currentClass.description }}</h3>
         </div>
 
+        <div class="average-rating">
+          <div class="rating">
+            <unnnic-icon-svg
+              :key="index"
+              v-for="index in 5"
+              :scheme="starScheme(index)"
+              icon="rating-star-1"
+              size="ant"
+            />
+
+            <div class="rating-title">
+              <span class="highlight">{{ averageRating }}</span>/5.0
+            </div>
+          </div>
+
+          <div class="leave-a-comment" @click="goToCommentInput">
+            Deixe um comentário
+          </div>
+        </div>
+
         <unnnicSwitch
             size="medium"
             textRight="Marcar aprendizado como concluído"
@@ -34,7 +54,7 @@
         </div>
         
       --></div>
-      <unnnic-tab initial-tab="comments" :tabs="['comments']">
+      <unnnic-tab v-model="currentTab" :tabs="['comments']">
         <!--<template slot="tab-head-first">Visão geral</template>
         <template slot="tab-panel-first">
           
@@ -52,6 +72,7 @@
             @icon-right-click="createComment"
             @keydown.enter="createComment"
             class="comment-input"
+            ref="comment-input"
           ></unnnic-input>
           
           <div class="comments-container">
@@ -143,6 +164,10 @@ export default {
         },
       ],
 
+      currentTab: 'comments',
+
+      averageRating: 3.6,
+
       comment: '',
       creatingComment: false,
     };
@@ -150,6 +175,14 @@ export default {
 
   methods: {
     ...mapActions(["toggleCheckClass"]),
+
+    goToCommentInput() {
+      this.currentTab = 'comments';
+
+      this.$nextTick(() => {
+        this.$refs['comment-input'].$el.querySelector('input').focus();
+      });
+    },
 
     createComment() {
       if (!this.comment.trim()) {
@@ -161,6 +194,10 @@ export default {
       console.log('create comment');
 
       this.creatingComment = false;
+    },
+
+    starScheme(star) {
+      return star <= this.averageRating ? 'feedback-yellow' : 'neutral-clean';
     },
   },
 
@@ -245,6 +282,41 @@ aside {
   width: 100%;
   height: 492px;
   border-radius: $unnnic-border-radius-md;
+}
+
+.average-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  .rating {
+    display: flex;
+    align-items: center;
+
+    .rating-title {
+      margin-left: $unnnic-spacing-inline-xs;
+      font-family: $unnnic-font-family-secondary;
+      font-weight: $unnnic-font-weight-bold;
+      font-size: $unnnic-font-size-body-lg;
+      line-height: $unnnic-font-size-body-lg + $unnnic-line-height-md;
+      color: $unnnic-color-neutral-cleanest;
+
+      .highlight {
+        color: $unnnic-color-neutral-darkest;
+      }
+    }
+  }
+
+  .leave-a-comment {
+    margin-top: $unnnic-spacing-stack-xs;
+    font-family: $unnnic-font-family-secondary;
+    font-weight: $unnnic-font-weight-regular;
+    font-size: $unnnic-font-size-body-lg;
+    line-height: $unnnic-font-size-body-lg + $unnnic-line-height-md;
+    color: $unnnic-color-neutral-darkest;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }
 
 .comment-input {
