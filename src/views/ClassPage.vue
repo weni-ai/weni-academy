@@ -34,24 +34,43 @@
         </div>
         
       --></div>
-      <!-- <unnnic-tab initialTab="first" :tabs="['first']">
-        <template slot="tab-head-first">Visão geral</template>
+      <unnnic-tab initial-tab="comments" :tabs="['comments']">
+        <!--<template slot="tab-head-first">Visão geral</template>
         <template slot="tab-panel-first">
           
         </template> -->
-        <!-- <template slot="tab-head-second">Comentários</template>
-        <template slot="tab-panel-second">
-          <unnnic-comment
-            v-for="comment in comments"
-            :key="comment.id"
-            :title="comment.name"
-            time="- 2 hours ago"
-            :text="comment.text"
-            :avatar="comment.avatar"
-          >
-          </unnnic-comment>
-        </template> -->
-      <!-- </unnnic-tab> -->
+        <template slot="tab-head-comments">Comentários (3)</template>
+        <template slot="tab-panel-comments">
+          <unnnic-input
+            label="Deixe um comentário"
+            v-model="comment"
+            :disabled="creatingComment"
+            size="md"
+            placeholder="Um bom comentário pode ajudar outras pessoas que estão aprendendo :)"
+            icon-right="send-email-3-1"
+            icon-right-clickable
+            @icon-right-click="createComment"
+            @keydown.enter="createComment"
+            class="comment-input"
+          ></unnnic-input>
+          
+          <div class="comments-container">
+            <unnnic-comment
+              v-for="comment in comments"
+              :key="comment.id"
+              :title="comment.name"
+              time="- 2 hours ago"
+              :text="comment.text"
+              class="comment"
+            >
+              <img
+                slot="avatar"
+                :src="comment.avatar"
+              />
+            </unnnic-comment>
+          </div>
+        </template>
+      </unnnic-tab>
     </main>
     <!-- 
   TODO:
@@ -101,7 +120,7 @@ export default {
         {
           id: 1,
           name: "Matheus",
-          avatar: "https://via.placeholder.com/600/92c952",
+          avatar: "https://expertphotography.b-cdn.net/wp-content/uploads/2018/07/Pet-Photography-Perspective-6.jpg",
           text: "Estou muito feliz pela oportunidade de aprender, de forma fácil, a utilização do editor de Fluxos, afinal, é uma ferramenta em que mexeremos diariamente.",
         },
         {
@@ -123,11 +142,26 @@ export default {
           text: "Estou muito feliz pela oportunidade de aprender, de forma fácil, a utilização do editor de Fluxos, afinal, é uma ferramenta em que mexeremos diariamente.",
         },
       ],
+
+      comment: '',
+      creatingComment: false,
     };
   },
 
   methods: {
     ...mapActions(["toggleCheckClass"]),
+
+    createComment() {
+      if (!this.comment.trim()) {
+        return;
+      }
+
+      this.creatingComment = true;
+
+      console.log('create comment');
+
+      this.creatingComment = false;
+    },
   },
 
   computed: {
@@ -211,5 +245,24 @@ aside {
   width: 100%;
   height: 492px;
   border-radius: $unnnic-border-radius-md;
+}
+
+.comment-input {
+  margin-bottom: $unnnic-spacing-stack-md;
+}
+
+.comments-container {
+  .comment {
+    ::v-deep .unnnic-comment__avatar {
+      display: flex;
+      justify-content: center;
+      overflow: hidden;
+      border-radius: 50%;
+    }
+  }
+
+  .comment + .comment {
+    margin-top: $unnnic-spacing-stack-md;
+  }
 }
 </style>
