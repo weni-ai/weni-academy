@@ -170,6 +170,9 @@ export default {
   &.reduced {
     height: 318px;
     .banner__content {
+      h3 {
+        height: 64px;
+      }
       .banner__content-description {
         height: 72px;
         overflow: hidden;

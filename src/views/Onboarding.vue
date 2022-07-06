@@ -5,7 +5,9 @@
         <h1>{{ name }}, o que você quer aprender hoje?</h1>
         <p>
           Abaixo estão listadas algumas trilhas de conhecimento que vão lhe
-          ajudar a aprender a utilizar a Plataforma Weni para diversos 💙
+          ajudar a aprender a utilizar a Plataforma Weni para diversos fins.
+          Escolha a que for de seu interesse para começar uma jornada de
+          aprendizado da plataforma 💙
         </p>
       </div>
     </div>
