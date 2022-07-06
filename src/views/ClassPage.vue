@@ -11,87 +11,93 @@
         allowfullscreen
       ></iframe>
 
-      <div class="main-title">
-        <div class="title">
-          <h1>{{ currentClass.title }}</h1>
-          <h3>{{ currentClass.description }}</h3>
-        </div>
-
-        <div class="average-rating">
-          <div class="rating">
-            <unnnic-icon-svg
-              :key="index"
-              v-for="index in 5"
-              :scheme="starScheme(index)"
-              icon="rating-star-1"
-              size="ant"
-            />
-
-            <div class="rating-title">
-              <span class="highlight">{{ averageRating }}</span>/5.0
+      <div class="page-content">
+        <div class="left-side">
+          <div class="main-title">
+            <div class="title">
+              <h1>{{ currentClass.title }}</h1>
+              <h3>{{ currentClass.description }}</h3>
             </div>
-          </div>
 
-          <div class="leave-a-comment" @click="goToCommentInput">
-            Deixe um comentário
-          </div>
-        </div>
-
-        <unnnicSwitch
-            size="medium"
-            textRight="Marcar aprendizado como concluído"
-            @input="
-              toggleCheckClass({ classID: currentClass.id, value: $event })
-            "
-            v-model="currentClass.watched.watched"
-          />
-        <!-- 
-        TODO:
-
-        <div class="comments">
-          <h1>COMMENTS</h1>
-          <h3>HERE</h3>
-        </div>
-        
-      --></div>
-      <unnnic-tab v-model="currentTab" :tabs="['comments']">
-        <!--<template slot="tab-head-first">Visão geral</template>
-        <template slot="tab-panel-first">
-          
-        </template> -->
-        <template slot="tab-head-comments">Comentários (3)</template>
-        <template slot="tab-panel-comments">
-          <unnnic-input
-            label="Deixe um comentário"
-            v-model="comment"
-            :disabled="creatingComment"
-            size="md"
-            placeholder="Um bom comentário pode ajudar outras pessoas que estão aprendendo :)"
-            icon-right="send-email-3-1"
-            icon-right-clickable
-            @icon-right-click="createComment"
-            @keydown.enter="createComment"
-            class="comment-input"
-            ref="comment-input"
-          ></unnnic-input>
-          
-          <div class="comments-container">
-            <unnnic-comment
-              v-for="comment in comments"
-              :key="comment.id"
-              :title="comment.name"
-              time="- 2 hours ago"
-              :text="comment.text"
-              class="comment"
-            >
-              <img
-                slot="avatar"
-                :src="comment.avatar"
+            <div class="average-rating">
+              <unnnic-star-rating
+                v-model="averageRating"
+                show-value
+                readonly
               />
-            </unnnic-comment>
+
+              <div class="leave-a-comment" @click="goToCommentInput">
+                Deixe um comentário
+              </div>
+            </div>
+
+            <unnnicSwitch
+                size="medium"
+                textRight="Marcar aprendizado como concluído"
+                @input="
+                  toggleCheckClass({ classID: currentClass.id, value: $event })
+                "
+                v-model="currentClass.watched.watched"
+              />
+            <!-- 
+            TODO:
+
+            <div class="comments">
+              <h1>COMMENTS</h1>
+              <h3>HERE</h3>
+            </div>
+            
+          --></div>
+          <unnnic-tab v-model="currentTab" :tabs="['comments']">
+            <!--<template slot="tab-head-first">Visão geral</template>
+            <template slot="tab-panel-first">
+              
+            </template> -->
+            <template slot="tab-head-comments">Comentários (3)</template>
+            <template slot="tab-panel-comments">
+              <unnnic-input
+                label="Deixe um comentário"
+                v-model="comment"
+                :disabled="creatingComment"
+                size="md"
+                placeholder="Um bom comentário pode ajudar outras pessoas que estão aprendendo :)"
+                icon-right="send-email-3-1"
+                icon-right-clickable
+                @icon-right-click="createComment"
+                @keydown.enter="createComment"
+                class="comment-input"
+                ref="comment-input"
+              ></unnnic-input>
+              
+              <div class="comments-container">
+                <unnnic-comment
+                  v-for="comment in comments"
+                  :key="comment.id"
+                  :title="comment.name"
+                  time="- 2 hours ago"
+                  :text="comment.text"
+                  class="comment"
+                >
+                  <img
+                    slot="avatar"
+                    :src="comment.avatar"
+                  />
+                </unnnic-comment>
+              </div>
+            </template>
+          </unnnic-tab>
+        </div>
+
+        <div class="right-side">
+          <div class="mood-rating-container">
+            <unnnic-mood-rating
+              title="Avalie seu aprendizado nesta aula"
+              v-model="mood"
+              :titles-moods="['Decepcionado', 'Insatisfeito', 'Neutro', 'Feliz', 'Produtivo']"
+            />
           </div>
-        </template>
-      </unnnic-tab>
+        </div>
+      </div>
     </main>
     <!-- 
   TODO:
@@ -170,6 +176,8 @@ export default {
 
       comment: '',
       creatingComment: false,
+
+      mood: null,
     };
   },
 
@@ -225,6 +233,16 @@ h2 {
   color: $unnnic-color-neutral-dark;
 }
 
+.page-content {
+  display: flex;
+  column-gap: $unnnic-spacing-inline-sm;
+  margin-top: $unnnic-spacing-stack-md;
+
+  .right-side {
+    min-width: 26.875rem;
+  }
+}
+
 .learning-page {
   margin-top: $unnnic-spacing-stack-lg;
 }
@@ -234,7 +252,7 @@ h2 {
   align-items: center;
   justify-content: space-between;
 
-  margin: $unnnic-spacing-stack-md 0;
+  margin-bottom: $unnnic-spacing-stack-md;
 
   .title {
     /* width: 100%; */
@@ -284,28 +302,20 @@ aside {
   border-radius: $unnnic-border-radius-md;
 }
 
+.mood-rating-container {
+  padding: $unnnic-spacing-inset-md;
+  background-color: $unnnic-color-background-carpet;
+  border-radius: $unnnic-border-radius-md;
+  outline-style: solid;
+  outline-color: $unnnic-color-neutral-soft;
+  outline-width: $unnnic-border-width-thinner;
+  outline-offset: -$unnnic-border-width-thinner;
+}
+
 .average-rating {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-
-  .rating {
-    display: flex;
-    align-items: center;
-
-    .rating-title {
-      margin-left: $unnnic-spacing-inline-xs;
-      font-family: $unnnic-font-family-secondary;
-      font-weight: $unnnic-font-weight-bold;
-      font-size: $unnnic-font-size-body-lg;
-      line-height: $unnnic-font-size-body-lg + $unnnic-line-height-md;
-      color: $unnnic-color-neutral-cleanest;
-
-      .highlight {
-        color: $unnnic-color-neutral-darkest;
-      }
-    }
-  }
 
   .leave-a-comment {
     margin-top: $unnnic-spacing-stack-xs;
