@@ -27,6 +27,9 @@
             :style="`width:${currentModule.watched_percentage}%`"
           />
         </div>
+        <p v-if="expanded" class="percentage-info">
+          {{`${currentModule.watched_percentage}% completo` }}
+        </p>
       </div>
       <div class="hover" v-if="!expanded">
         <div class="links">
@@ -258,5 +261,11 @@ export default {
     height: 100%;
     border-radius: $unnnic-border-radius-pill;
   }
+}
+
+.percentage-info{
+  margin-top: $unnnic-spacing-stack-xs;
+  font-weight: $unnnic-font-weight-bold;
+  color: $unnnic-color-neutral-darkest;
 }
 </style>
