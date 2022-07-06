@@ -8,7 +8,7 @@ const getters = {
 
     if (['Home', 'ClassesListAll', 'ClassPage'].includes(name)) {
       breadcrumbs.push({
-        name: "Temas",
+        name: "Trilhas",
         path: {
           name: 'Onboarding',
         }

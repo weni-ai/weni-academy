@@ -4,9 +4,8 @@
       <div class="texts unnnic-grid-span-7">
         <h1>{{ name }}, o que você quer aprender hoje?</h1>
         <p>
-          Abaixo estão listadas situações que são possíveis de serem criados com
-          os nossos bots e fluxos. escolha o que for de seu interesse para
-          começar uma jornada de aprendizado sobre a nossa plataforma 💙
+          Abaixo estão listadas algumas trilhas de conhecimento que vão lhe
+          ajudar a aprender a utilizar a Plataforma Weni para diversos 💙
         </p>
       </div>
     </div>
