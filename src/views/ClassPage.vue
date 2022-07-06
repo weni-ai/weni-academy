@@ -30,15 +30,6 @@
                 Deixe um comentário
               </div>
             </div>
-
-            <unnnicSwitch
-                size="medium"
-                textRight="Marcar aprendizado como concluído"
-                @input="
-                  toggleCheckClass({ classID: currentClass.id, value: $event })
-                "
-                v-model="currentClass.watched.watched"
-              />
             <!-- 
             TODO:
 
@@ -48,11 +39,24 @@
             </div>
             
           --></div>
-          <unnnic-tab v-model="currentTab" :tabs="['comments']">
-            <!--<template slot="tab-head-first">Visão geral</template>
-            <template slot="tab-panel-first">
-              
-            </template> -->
+          <unnnic-tab v-model="currentTab" :tabs="['overview', 'comments']">
+            <template slot="tab-head-overview">Visão Geral</template>
+            <template slot="tab-panel-overview">
+              <div class="overview-container">
+                <unnnicSwitch
+                  size="medium"
+                  textRight="Marcar aprendizado como concluído"
+                  @input="
+                    toggleCheckClass({ classID: currentClass.id, value: $event })
+                  "
+                  v-model="currentClass.watched.watched"
+                  class="toggle-class"
+                />
+
+                <div v-html="currentClass.content"></div>
+              </div>
+            </template>
+
             <template slot="tab-head-comments">Comentários (3)</template>
             <template slot="tab-panel-comments">
               <unnnic-input
@@ -170,7 +174,7 @@ export default {
         },
       ],
 
-      currentTab: 'comments',
+      currentTab: 'overview',
 
       averageRating: 3.6,
 
@@ -326,6 +330,33 @@ aside {
     color: $unnnic-color-neutral-darkest;
     text-decoration: underline;
     cursor: pointer;
+  }
+}
+
+.overview-container {
+  .toggle-class {
+    margin-bottom: $unnnic-spacing-stack-sm;
+  }
+
+  ::v-deep  {
+    p {
+      font-family: $unnnic-font-family-secondary;
+      font-weight: $unnnic-font-weight-regular;
+      font-size: $unnnic-font-size-body-lg;
+      line-height: $unnnic-font-size-body-lg + $unnnic-line-height-md;
+      color: $unnnic-color-neutral-darkest;
+
+      & + p {
+        margin-top: 1rem;
+      }
+    }
+
+    img {
+      display: block;
+      margin: 0 auto;
+      max-width: 75%;
+      max-height: 24.5rem;
+    }
   }
 }
 
