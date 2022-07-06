@@ -16,6 +16,7 @@ export default new Vuex.Store({
     SET_TOKEN: (state, token) => {
       state.token = token;
       api.defaults.headers.common['Authorization'] = token;
+      localStorage.setItem('token', token);
     },
   },
   actions: {

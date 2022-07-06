@@ -26,10 +26,10 @@ export default {
   async toggleCheckClass({ commit, getters }, {classID, value}) {
     commit('TOGGLE_CHECK_CLASS_REQUEST', { value, getters });
     try {
-      await api.patch(`classes/${classID}/update_watched/`, {
+      const { data } = await api.patch(`classes/${classID}/update_watched/`, {
         watched: value
       });
-      commit('TOGGLE_CHECK_CLASS__SUCCESS');
+      commit('TOGGLE_CHECK_CLASS__SUCCESS', data.watched_percentage);
     } catch (error) {
       commit('TOGGLE_CHECK_CLASS_ERROR', { error, getters, value });
     }

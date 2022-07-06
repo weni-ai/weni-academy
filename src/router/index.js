@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import ClassPage from '@/views/ClassPage.vue';
 import ClassesListAll from '@/views/ClassesListAll.vue';
 import Home from '@/views/Home.vue';
+import Onboarding from '@/views/Onboarding.vue';
 
 import store from '@/store';
 
@@ -22,6 +23,11 @@ const routes = [
     path: '/module/:module_id',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/onboarding',
+    name: 'Onboarding',
+    component: Onboarding
   },
   {
     path: '/module/:module_id/category/:id_category/class/:id_class',
@@ -46,7 +52,7 @@ const routes = [
       if (to.query.next) {
         next(to.query.next);
       } else {
-        next('/');
+        next('/onboarding');
 
         //TO-DO HANDLE ERROR
       }

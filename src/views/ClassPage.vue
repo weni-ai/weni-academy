@@ -146,6 +146,8 @@ h3 {
   margin-top: $unnnic-spacing-stack-nano;
   font-size: $unnnic-font-size-body-lg;
   color: $unnnic-color-neutral-cloudy;
+  font-weight: $unnnic-font-weight-regular;
+  font-family: $unnnic-font-family-secondary;
 }
 
 h2 {
@@ -160,7 +162,7 @@ h2 {
 
 .main-title {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 
   margin: $unnnic-spacing-stack-md 0;
@@ -168,6 +170,10 @@ h2 {
   .title {
     /* width: 100%; */
     margin-right: $unnnic-spacing-stack-sm;
+  }
+
+  .unnnic-switch {
+    min-width: 286px;
   }
 
   .comments {
