@@ -1,12 +1,23 @@
 <template>
   <div class="link" tabindex="0">
-    <div :class="['banner', `banner__${bgGradient}`, expanded && 'expanded']">
+    <div
+      :class="[
+        'banner',
+        `banner__${bgGradient}`,
+        expanded ? 'expanded' : 'reduced',
+      ]"
+    >
       <div :class="['banner__content']">
         <p v-if="!expanded" class="banner__content-icon">
           <img :src="currentModule.image" alt="Module icon" />
         </p>
         <h3>{{ currentModule.title }}</h3>
-        <p class="banner__content-description">
+        <p
+          :class="[
+            'banner__content-description',
+            currentModule.watched_percentage ? '' : 'hasNotProgress',
+          ]"
+        >
           {{ currentModule.description }}
         </p>
 
@@ -16,19 +27,38 @@
             :style="`width:${currentModule.watched_percentage}%`"
           />
         </div>
+        <p v-if="expanded" class="percentage-info">
+          {{`${currentModule.watched_percentage}% completo` }}
+        </p>
       </div>
       <div class="hover" v-if="!expanded">
+        <div class="links">
+          <router-link
+            :to="{
+              name: 'Home',
+              params: {
+                module_id: currentModule.id,
+              },
+            }"
+          >
+            <unnnic-button type="secondary">Abrir</unnnic-button>
+          </router-link>
+        </div>
+        <!-- <unnnic-button type="terciary">gerar certificado</unnnic-button> -->
         <router-link
+          v-if="resumeWhereILeft(currentModule)"
+          class="continue__class"
           :to="{
-            name: 'Home',
+            name: 'ClassPage',
             params: {
-              module_id: currentModule.id,
+              module_id: resumeWhereILeft(currentModule).module.id,
+              id_category: resumeWhereILeft(currentModule).category.id,
+              id_class: resumeWhereILeft(currentModule).id,
             },
           }"
         >
-          <unnnic-button type="secondary">Abrir</unnnic-button>
+          Continuar de onde parei →
         </router-link>
-        <!-- <unnnic-button type="terciary">gerar certificado</unnnic-button> -->
       </div>
     </div>
   </div>
@@ -51,7 +81,21 @@ export default {
       default: () => {},
     },
   },
+  methods: {
+    resumeWhereILeft: (currentModule) => {
+      const classes = currentModule?.category_set?.reduce(
+        (acumulator, current) => {
+          return acumulator.concat(current.class_set);
+        },
+        []
+      );
+      const lesson = classes?.find((lesson) => {
+        return !lesson.watched.watched;
+      });
 
+      return lesson;
+    },
+  },
   data() {
     return {
       isExpanded: this.expanded,
@@ -89,7 +133,6 @@ export default {
     flex-direction: column;
     justify-content: flex-end;
     position: relative;
-    height: 318px;
 
     &-icon {
       display: flex;
@@ -117,12 +160,30 @@ export default {
     }
 
     & &-description {
-      font-family: $unnnic-font-family-primary;
+      font-family: $unnnic-font-family-secondary;
       font-weight: $unnnic-font-weight-regular;
       color: $unnnic-color-neutral-darkest;
       font-size: $unnnic-font-size-body-lg;
       line-height: $unnnic-line-height-md + $unnnic-font-size-body-lg;
-     
+    }
+  }
+  &.reduced {
+    height: 318px;
+    .banner__content {
+      h3 {
+        height: 64px;
+      }
+      .banner__content-description {
+        height: 72px;
+        overflow: hidden;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+
+        &.hasNotProgress {
+          margin-bottom: $unnnic-spacing-stack-sm;
+        }
+      }
     }
   }
   &.expanded {
@@ -152,9 +213,25 @@ export default {
   backdrop-filter: blur(4px);
   transition: visibility 0s, opacity 0.1s linear;
 
+  .links {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
   a,
   button {
     width: 100%;
+  }
+
+  .continue__class {
+    position: absolute;
+    bottom: $unnnic-spacing-stack-md;
+    right: 0;
+    text-align: center;
+    text-decoration: underline;
+    color: $unnnic-color-neutral-darkest;
+    font-family: $unnnic-font-family-secondary;
   }
 }
 
@@ -187,5 +264,11 @@ export default {
     height: 100%;
     border-radius: $unnnic-border-radius-pill;
   }
+}
+
+.percentage-info{
+  margin-top: $unnnic-spacing-stack-xs;
+  font-weight: $unnnic-font-weight-bold;
+  color: $unnnic-color-neutral-darkest;
 }
 </style>
