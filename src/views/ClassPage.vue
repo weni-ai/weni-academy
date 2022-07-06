@@ -57,7 +57,7 @@
             </div>
             
           --></div>
-          <unnnic-tab v-model="currentTab" :tabs="['overview', 'comments']">
+          <unnnic-tab v-model="currentTab" :tabs="['overview', 'materials', 'comments']">
             <template slot="tab-head-overview">Visão Geral</template>
             <template slot="tab-panel-overview">
               <div class="overview-container">
@@ -72,6 +72,14 @@
                 />
 
                 <div v-html="currentClass.content"></div>
+              </div>
+            </template>
+
+            <template slot="tab-head-materials">Materiais de Apoio</template>
+            <template slot="tab-panel-materials">
+              <div v-for="(material, index) in materials" :key="index">
+                <unnnic-icon v-if="material.type === 'pdf'" icon="office-file-pdf-1-1" />
+                {{ material.title }}
               </div>
             </template>
 
@@ -200,6 +208,17 @@ export default {
       creatingComment: false,
 
       mood: null,
+
+      materials: [{
+        title: 'Nome do arquivo.docx',
+        type: 'doc',
+      }, {
+        title: 'Nome do arquivo.pdf',
+        type: 'pdf',
+      }, {
+        title: 'Nome do link',
+        type: 'link',
+      }],
     };
   },
 
