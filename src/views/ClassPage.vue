@@ -1,18 +1,36 @@
 <template>
   <div class="learning-page unnnic-grid-giant">
     <main class="unnnic-grid-span-12">
-      <iframe
-        v-if="hasMovie"
-        class="i"
-        :src="currentClass.video"
-        :title="currentClass.title"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-      ></iframe>
+      <div class="page-container">
+        <iframe
+          v-if="hasMovie"
+          class="i"
+          :src="currentClass.video"
+          :title="currentClass.title"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
 
-      <div class="page-content">
-        <div class="left-side">
+        <div class="notes">
+          <div class="header">
+            <div class="title">Suas anotações</div>
+
+            <div class="action">Salvar</div>
+          </div>
+
+          <div class="content">
+            <textarea>Ad est dolorem id rerum dolorem perferendis minima soluta. Reiciendis doloribus modi quasi qui molestiae. Facilis velit vel. Perspiciatis est est error nam nihil id. Ullam placeat voluptatem est cum quam ullam ut. Occaecati aut est quas illo ut voluptas amet cumque.
+
+            Ipsam voluptatem quos consequatur natus. Minima magnam modi quia natus esse. Soluta hic repudiandae qui assumenda. Sunt velit reiciendis animi voluptas dolores quibusdam qui.
+
+            Commodi est facilis sequi et consequuntur possimus eos. Voluptatum ex ea sunt numquam aut fugiat. Consequatur velit rerum recusandae eum et.
+
+            Sunt velit reiciendis animi voluptas dolores quibusdam qui.</textarea>
+          </div>
+        </div>
+
+        <div>
           <div class="main-title">
             <div class="title">
               <h1>{{ currentClass.title }}</h1>
@@ -237,13 +255,64 @@ h2 {
   color: $unnnic-color-neutral-dark;
 }
 
-.page-content {
-  display: flex;
-  column-gap: $unnnic-spacing-inline-sm;
-  margin-top: $unnnic-spacing-stack-md;
+.page-container {
+  display: grid;
+  grid-template-columns: auto 26.875rem;
+  grid-column-gap: $unnnic-spacing-inline-sm;
+  grid-row-gap: $unnnic-spacing-stack-md;
 
-  .right-side {
-    min-width: 26.875rem;
+  .notes {
+    // background-color: $unnnic-color-aux-baby-yellow;
+    background-color: #FBF7C9;
+    border-radius: $unnnic-border-radius-md;
+    padding: $unnnic-spacing-inset-md;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: $unnnic-spacing-stack-sm;
+
+      .title {
+        font-family: $unnnic-font-family-secondary;
+        font-weight: $unnnic-font-weight-bold;
+        font-size: $unnnic-font-size-title-sm;
+        line-height: $unnnic-font-size-title-sm + $unnnic-line-height-md;
+        color: $unnnic-color-neutral-darkest;
+      }
+
+      .action {
+        text-decoration: underline;
+        font-family: $unnnic-font-family-secondary;
+        font-weight: $unnnic-font-weight-regular;
+        font-size: $unnnic-font-size-body-gt;
+        line-height: $unnnic-font-size-body-gt + $unnnic-line-height-md;
+        color: $unnnic-color-neutral-dark;
+        cursor: pointer;
+        user-select: none;
+      }
+    }
+
+    .content {
+      flex: 1;
+
+      textarea {
+        background-color: transparent;
+        border: 0;
+        width: calc(100% + $unnnic-spacing-inline-xs);
+        height: 100%;
+        resize: none;
+        font-family: $unnnic-font-family-primary;
+        font-weight: $unnnic-font-weight-regular;
+        font-size: $unnnic-font-size-body-lg;
+        line-height: $unnnic-font-size-body-lg + $unnnic-line-height-md;
+        color: $unnnic-color-neutral-dark;
+        outline: none;
+        padding-right: $unnnic-spacing-inline-sm;
+      }
+    }
   }
 }
 
