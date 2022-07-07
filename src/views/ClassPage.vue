@@ -126,6 +126,27 @@
               :titles-moods="['Decepcionado', 'Insatisfeito', 'Neutro', 'Feliz', 'Produtivo']"
             />
           </div>
+
+          <div v-if="nextClass" class="next-class-container">
+            <div class="title">Próxima aula</div>
+
+            <router-link
+              :to="{
+                name: 'ClassPage',
+                params: {
+                  id_class: nextClass.id,
+                },
+              }"
+            >
+              <unnnic-card-data
+                :title="nextClass.title"
+                :description="nextClass.description"
+                :score="nextClass.rating"
+                :info="nextClass.comments && `(${nextClass.comments} comments)`"
+                :checked="nextClass.watched.watched"
+              />
+            </router-link>
+          </div>
         </div>
       </div>
     </main>
@@ -150,16 +171,6 @@
       </div>
 
       <div class="card-default evaluate"></div>
-
-      <h2>Próxima aula</h2>
-
-      <unnnic-card-data
-        title="Title Card"
-        description="Description Description Description Description Description Description Description Description."
-        score="4.9"
-        info="(3 comments)"
-        checked
-      />
     </aside> -->
   </div>
 </template>
@@ -268,7 +279,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["currentClass"]),
+    ...mapGetters(["currentClass", "currentModule"]),
 
     isNotesFocusedOrFilled() {
       return this.isNotesFocused || this.notes;
@@ -276,6 +287,23 @@ export default {
 
     isNotesYellowed() {
       return !this.isNotesFocused && this.notes;
+    },
+
+    nextClass() {
+      const classes =
+        this.currentModule.category_set
+          .map((categories) => categories.class_set)
+          .flat();
+      
+      const indexCurrentClass =
+        classes
+          .findIndex((classItem) => classItem.id === this.currentClass.id);
+      
+      if (indexCurrentClass !== -1 && classes[indexCurrentClass + 1]) {
+        return classes[indexCurrentClass + 1];
+      } else {
+        return null;
+      }
     },
   },
 };
@@ -465,6 +493,19 @@ aside {
   outline-color: $unnnic-color-neutral-soft;
   outline-width: $unnnic-border-width-thinner;
   outline-offset: -$unnnic-border-width-thinner;
+}
+
+.next-class-container {
+  margin-top: $unnnic-spacing-stack-md;
+
+  .title {
+    font-family: $unnnic-font-family-secondary;
+    font-weight: $unnnic-font-weight-bold;
+    font-size: $unnnic-font-size-title-sm;
+    line-height: $unnnic-font-size-title-sm + $unnnic-line-height-md;
+    color: $unnnic-color-neutral-dark;
+    margin-bottom: $unnnic-spacing-stack-sm;
+  }
 }
 
 .average-rating {
