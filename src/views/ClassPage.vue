@@ -12,21 +12,21 @@
           allowfullscreen
         ></iframe>
 
-        <div class="notes">
+        <div :class="['notes', { yellowed: isNotesYellowed }]">
           <div class="header">
             <div class="title">Suas anotações</div>
 
-            <div class="action">Salvar</div>
+            <div class="action">
+              <unnnic-icon v-if="isSavingNotes" class="spin" icon="loading-circle-1" scheme="neutral-dark" />
+            </div>
+          </div>
+
+          <div class="placeholder" v-if="!isNotesFocusedOrFilled">
+            <span class="edit-button" @click="$refs.notesInput.focus()">Clique aqui</span> para começar a fazer anotações.
           </div>
 
           <div class="content">
-            <textarea>Ad est dolorem id rerum dolorem perferendis minima soluta. Reiciendis doloribus modi quasi qui molestiae. Facilis velit vel. Perspiciatis est est error nam nihil id. Ullam placeat voluptatem est cum quam ullam ut. Occaecati aut est quas illo ut voluptas amet cumque.
-
-            Ipsam voluptatem quos consequatur natus. Minima magnam modi quia natus esse. Soluta hic repudiandae qui assumenda. Sunt velit reiciendis animi voluptas dolores quibusdam qui.
-
-            Commodi est facilis sequi et consequuntur possimus eos. Voluptatum ex ea sunt numquam aut fugiat. Consequatur velit rerum recusandae eum et.
-
-            Sunt velit reiciendis animi voluptas dolores quibusdam qui.</textarea>
+            <textarea ref="notesInput" v-model="notes" @input="saveNotes" @focus="isNotesFocused = true" @blur="isNotesFocused = false"></textarea>
           </div>
         </div>
 
@@ -219,6 +219,13 @@ export default {
         title: 'Nome do link',
         type: 'link',
       }],
+
+      notes: '',
+
+      isNotesFocused: false,
+
+      isSavingNotes: false,
+      lastCallSaveNotes: null,
     };
   },
 
@@ -245,13 +252,31 @@ export default {
       this.creatingComment = false;
     },
 
-    starScheme(star) {
-      return star <= this.averageRating ? 'feedback-yellow' : 'neutral-clean';
+    saveNotes() {
+      clearTimeout(this.lastCallSaveNotes);
+
+      this.lastCallSaveNotes = setTimeout(() => {
+        this.isSavingNotes = true;
+
+        setTimeout(() => {
+          console.log('saved!');
+
+          this.isSavingNotes = false;
+        }, 500);
+      }, 300);
     },
   },
 
   computed: {
     ...mapGetters(["currentClass"]),
+
+    isNotesFocusedOrFilled() {
+      return this.isNotesFocused || this.notes;
+    },
+
+    isNotesYellowed() {
+      return !this.isNotesFocused && this.notes;
+    },
   },
 };
 </script>
@@ -281,12 +306,23 @@ h2 {
   grid-row-gap: $unnnic-spacing-stack-md;
 
   .notes {
-    // background-color: $unnnic-color-aux-baby-yellow;
-    background-color: #FBF7C9;
     border-radius: $unnnic-border-radius-md;
     padding: $unnnic-spacing-inset-md;
     display: flex;
     flex-direction: column;
+
+    background-color: $unnnic-color-background-carpet;
+    border-radius: $unnnic-border-radius-md;
+    outline-style: solid;
+    outline-color: $unnnic-color-neutral-soft;
+    outline-width: $unnnic-border-width-thinner;
+    outline-offset: -$unnnic-border-width-thinner;
+
+    &.yellowed {
+      // background-color: $unnnic-color-aux-baby-yellow;
+      background-color: #FBF7C9;
+      outline: none;
+    }
 
     .header {
       display: flex;
@@ -314,6 +350,19 @@ h2 {
       }
     }
 
+    .placeholder {
+      font-family: $unnnic-font-family-primary;
+      font-weight: $unnnic-font-weight-regular;
+      font-size: $unnnic-font-size-body-lg;
+      line-height: $unnnic-font-size-body-lg + $unnnic-line-height-md;
+      color: $unnnic-color-neutral-dark;
+
+      .edit-button {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+
     .content {
       flex: 1;
 
@@ -330,6 +379,20 @@ h2 {
         color: $unnnic-color-neutral-dark;
         outline: none;
         padding-right: $unnnic-spacing-inline-sm;
+
+        &::-webkit-scrollbar {
+          width: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: $unnnic-color-neutral-clean;
+          border-radius: $unnnic-border-radius-pill;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: $unnnic-color-neutral-soft;
+          border-radius: $unnnic-border-radius-pill;
+        }
       }
     }
   }
@@ -465,5 +528,21 @@ aside {
   .comment + .comment {
     margin-top: $unnnic-spacing-stack-md;
   }
+}
+
+.spin {
+  animation-name: spin;
+  animation-duration: 1500ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
 }
 </style>
