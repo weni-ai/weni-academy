@@ -22,4 +22,20 @@ export default {
 
     return category?.class_set.find(({ id }) => id == idClass);
   },
+
+  getTotalClasses(state, getters) {
+    const category = getters.currentCategory;
+
+    return category?.class_set.length;
+  },
+  getTotalCompletedClasses(state, getters) {
+    const category = getters.currentCategory;
+    
+    const number = category?.class_set.reduce((acumulator, lesson) => {
+      if (lesson.watched.watched) acumulator++;
+      return acumulator;
+    }, 0);
+
+    return number;
+  }
 };

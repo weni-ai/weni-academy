@@ -1,8 +1,11 @@
 <template>
   <div class="listAllContainer">
     <main>
-      <div>
-        <!-- PROGRESS ITEM HERE -->
+      <div class="header">
+        <unnnic-circle-progress-bar
+          :progress="getTotalCompletedClasses"
+          :totalProgress="getTotalClasses"
+        />
         <h1>{{ currentCategory.title }}</h1>
       </div>
 
@@ -49,7 +52,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['currentCategory']),
+    ...mapGetters(['currentCategory', 'getTotalClasses', 'getTotalCompletedClasses']),
   },
 };
 </script>
@@ -65,7 +68,11 @@ h1 {
 
 main {
   margin: $unnnic-spacing-stack-lg 0 $unnnic-spacing-stack-sm;
-
+  .header {
+    display: flex;
+    align-items: center;
+    gap: $unnnic-spacing-stack-sm;
+  }
   .course-list {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
