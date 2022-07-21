@@ -39,7 +39,7 @@
 
             <div class="average-rating">
               <unnnic-star-rating
-                v-model="averageRating"
+                v-model="currentClass.rating_mood"
                 show-value
                 readonly
               />
@@ -212,8 +212,6 @@ export default {
       ],
 
       currentTab: 'overview',
-
-      averageRating: 3.6,
 
       comment: '',
       creatingComment: false,
