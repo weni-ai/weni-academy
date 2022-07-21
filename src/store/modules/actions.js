@@ -12,6 +12,16 @@ export default {
     }
   },
 
+  createClassComment(_store, { classId, text }) {
+    return api.post(`classes/${classId}/comment/`, {
+      text,
+    });
+  },
+
+  getClassComments(_store, { classId }) {
+    return api.get(`classes/${classId}/comment/`);
+  },
+
   getClassAnnotation(_store, { classId }) {
     return api.get(`classes/${classId}/update_annotation/`);
   },

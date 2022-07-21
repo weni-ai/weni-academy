@@ -83,7 +83,7 @@
               </div>
             </template>
 
-            <template slot="tab-head-comments">Comentários (3)</template>
+            <template slot="tab-head-comments">Comentários ({{ comments.length }})</template>
             <template slot="tab-panel-comments">
               <unnnic-input
                 label="Deixe um comentário"
@@ -104,7 +104,7 @@
                   v-for="comment in comments"
                   :key="comment.id"
                   :title="comment.name"
-                  time="- 2 hours ago"
+                  :time="`- ${comment.created_at}`"
                   :text="comment.text"
                   class="comment"
                 >
@@ -185,32 +185,7 @@ export default {
     return {
       hasMovie: true,
       text: `<h1>Titulo</h1>\r\n\r\n<p>sdads asdas</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porta sagittis ligula at egestas. Vivamus vestibulum diam sit amet massa viverra, quis dapibus diam pellentesque. Pellentesque fermentum efficitur lorem sit amet sollicitudin. Sed magna velit, pellentesque sit amet aliquet quis, dapibus vitae erat. Nullam imperdiet mollis odio eu ultrices. Duis imperdiet volutpat dolor, vitae imperdiet turpis elementum at. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut ornare nunc.</p>\r\n\r\n<p>Sed quam lorem, ultricies vitae sapien a, vehicula malesuada arcu. Phasellus luctus lobortis enim eget consequat. Praesent mattis quam urna, tempor ornare sapien tincidunt ac. Pellentesque consectetur volutpat velit vel tincidunt. Vestibulum vestibulum fringilla malesuada. Curabitur sit amet ex eu nunc feugiat efficitur. Morbi hendrerit ipsum sed neque accumsan, ut ultricies turpis commodo. Cras dapibus nisi vel interdum laoreet. Sed varius, arcu eu finibus imperdiet, ligula eros luctus augue, quis feugiat justo magna non enim.</p>\r\n\r\n<p>Sed eget bibendum diam, nec vehicula augue. Quisque consectetur commodo finibus. Aenean commodo ante nec tempus auctor. Aenean vel aliquet magna. Mauris aliquam odio sit amet rhoncus ultricies. Praesent lobortis, enim a placerat gravida, dolor ante suscipit libero, ac aliquet dui tellus vitae magna. Fusce ut fermentum urna. Integer nunc nunc, volutpat porttitor tincidunt condimentum, blandit eget turpis. Sed pharetra scelerisque laoreet. Nulla facilisi. Aliquam ultrices non magna sit amet mattis. Sed feugiat dui at lacus finibus, sed tincidunt lorem fermentum. Curabitur molestie pharetra rhoncus. Etiam egestas nunc sed tortor dapibus feugiat vel ac felis.</p>\r\n\r\n<p>&nbsp;</p>`,
-      comments: [
-        {
-          id: 1,
-          name: "Matheus",
-          avatar: "https://expertphotography.b-cdn.net/wp-content/uploads/2018/07/Pet-Photography-Perspective-6.jpg",
-          text: "Estou muito feliz pela oportunidade de aprender, de forma fácil, a utilização do editor de Fluxos, afinal, é uma ferramenta em que mexeremos diariamente.",
-        },
-        {
-          id: 2,
-          name: "Matheus",
-          avatar: "https://via.placeholder.com/600/92c952",
-          text: "Estou muito feliz pela oportunidade de aprender, de forma fácil, a utilização do editor de Fluxos, afinal, é uma ferramenta em que mexeremos diariamente.",
-        },
-        {
-          id: 3,
-          name: "Matheus",
-          avatar: "https://via.placeholder.com/600/92c952",
-          text: "Estou muito feliz pela oportunidade de aprender, de forma fácil, a utilização do editor de Fluxos, afinal, é uma ferramenta em que mexeremos diariamente.",
-        },
-        {
-          id: 4,
-          name: "Matheus",
-          avatar: "https://via.placeholder.com/600/92c952",
-          text: "Estou muito feliz pela oportunidade de aprender, de forma fácil, a utilização do editor de Fluxos, afinal, é uma ferramenta em que mexeremos diariamente.",
-        },
-      ],
+      comments: [],
 
       currentTab: 'overview',
 
@@ -247,6 +222,12 @@ export default {
     }).then(({ data }) => {
       this.notes = data.text;
     });
+
+    this.getClassComments({
+      classId: this.currentClass.id,
+    }).then(({ data }) => {
+      this.comments = data.comments;
+    });
   },
 
   methods: {
@@ -255,6 +236,8 @@ export default {
       'setClassMood',
       'getClassAnnotation',
       'setClassAnnotation',
+      'createClassComment',
+      'getClassComments',
     ]),
 
     async setMood($event) {
@@ -283,16 +266,31 @@ export default {
       });
     },
 
-    createComment() {
+    async createComment() {
       if (!this.comment.trim()) {
         return;
       }
 
-      this.creatingComment = true;
+      try {
+        this.creatingComment = true;
 
-      console.log('create comment');
+        const response = await this.createClassComment({
+          classId: this.currentClass.id,
+          text: this.comment.trim(),
+        });
 
-      this.creatingComment = false;
+        this.comments.unshift({
+          id: response.data.id,
+          name: response.data.name,
+          avatar: response.data.avatar,
+          text: response.data.text,
+          created_at: response.data.created_at,
+        });
+
+        this.comment = '';
+      } finally {
+        this.creatingComment = false;
+      }
     },
 
     saveNotes() {
