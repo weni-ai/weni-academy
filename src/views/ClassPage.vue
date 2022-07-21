@@ -67,7 +67,7 @@
                   @input="
                     toggleCheckClass({ classID: currentClass.id, value: $event })
                   "
-                  v-model="currentClass.watched.watched"
+                  v-model="currentClass.lesson_monitoring.watched"
                   class="toggle-class"
                 />
 
@@ -143,7 +143,7 @@
                 :description="nextClass.description"
                 :score="nextClass.rating"
                 :info="nextClass.comments && `(${nextClass.comments} comments)`"
-                :checked="nextClass.watched.watched"
+                :checked="nextClass.lesson_monitoring.watched"
               />
             </router-link>
           </div>
