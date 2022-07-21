@@ -122,7 +122,8 @@
           <div class="mood-rating-container">
             <unnnic-mood-rating
               title="Avalie seu aprendizado nesta aula"
-              v-model="mood"
+              :value="currentClass.lesson_monitoring.mood === 0 ? null : currentClass.lesson_monitoring.mood"
+              @input="setMood"
               :titles-moods="['Decepcionado', 'Insatisfeito', 'Neutro', 'Feliz', 'Produtivo']"
             />
           </div>
@@ -216,8 +217,6 @@ export default {
       comment: '',
       creatingComment: false,
 
-      mood: null,
-
       materials: [{
         title: 'Nome do arquivo.docx',
         type: 'doc',
@@ -240,6 +239,14 @@ export default {
 
   methods: {
     ...mapActions(["toggleCheckClass"]),
+
+    setMood($event) {
+      const mood = $event === null ? 0 : $event;
+
+      mood;
+
+      // call mood integration here
+    },
 
     goToCommentInput() {
       this.currentTab = 'comments';
