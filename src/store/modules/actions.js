@@ -16,6 +16,10 @@ export default {
     return api.get(`classes/${classId}/update_annotation/`);
   },
 
+  setClassAnnotation(_store, { classId, annotation }) {
+    return api.put(`classes/${classId}/update_annotation/`, { annotation });
+  },
+
   setClassMood(_store, { classId, mood }) {
     return api.put(`classes/${classId}/rating_mood/`, { mood });
   },

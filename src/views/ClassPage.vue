@@ -241,10 +241,21 @@ export default {
 
   created() {
     this.mood = this.currentClass.lesson_monitoring.mood;
+
+    this.getClassAnnotation({
+      classId: this.currentClass.id,
+    }).then(({ data }) => {
+      this.notes = data.text;
+    });
   },
 
   methods: {
-    ...mapActions(["toggleCheckClass", 'setClassMood']),
+    ...mapActions([
+      "toggleCheckClass",
+      'setClassMood',
+      'getClassAnnotation',
+      'setClassAnnotation',
+    ]),
 
     async setMood($event) {
       const mood = $event === null ? 0 : $event;
@@ -287,14 +298,17 @@ export default {
     saveNotes() {
       clearTimeout(this.lastCallSaveNotes);
 
-      this.lastCallSaveNotes = setTimeout(() => {
-        this.isSavingNotes = true;
+      this.lastCallSaveNotes = setTimeout(async () => {
+        try {
+          this.isSavingNotes = true;
 
-        setTimeout(() => {
-          console.log('saved!');
-
+          await this.setClassAnnotation({
+            classId: this.currentClass.id,
+            annotation: this.notes,
+          });
+        } finally {
           this.isSavingNotes = false;
-        }, 500);
+        }
       }, 300);
     },
   },
