@@ -39,7 +39,7 @@
 
             <div class="average-rating">
               <unnnic-star-rating
-                v-model="currentClass.rating_mood"
+                v-model="currentClass.average_rating"
                 show-value
                 readonly
               />
@@ -122,7 +122,7 @@
           <div class="mood-rating-container">
             <unnnic-mood-rating
               title="Avalie seu aprendizado nesta aula"
-              :value="currentClass.lesson_monitoring.mood === 0 ? null : currentClass.lesson_monitoring.mood"
+              :value="mood === 0 ? null : mood"
               @input="setMood"
               :titles-moods="['Decepcionado', 'Insatisfeito', 'Neutro', 'Feliz', 'Produtivo']"
             />
@@ -228,6 +228,8 @@ export default {
         type: 'link',
       }],
 
+      mood: 0,
+
       notes: '',
 
       isNotesFocused: false,
@@ -237,15 +239,29 @@ export default {
     };
   },
 
-  methods: {
-    ...mapActions(["toggleCheckClass"]),
+  created() {
+    this.mood = this.currentClass.lesson_monitoring.mood;
+  },
 
-    setMood($event) {
+  methods: {
+    ...mapActions(["toggleCheckClass", 'setClassMood']),
+
+    async setMood($event) {
       const mood = $event === null ? 0 : $event;
 
-      mood;
+      const initialValue = this.mood;
+      this.mood = $event;
 
-      // call mood integration here
+      try {
+        const response = await this.setClassMood({
+          classId: this.currentClass.id,
+          mood,
+        });
+
+        this.mood = this.currentClass.lesson_monitoring.mood = response.data.mood;
+      } catch (error) {
+        this.mood = initialValue;
+      }
     },
 
     goToCommentInput() {

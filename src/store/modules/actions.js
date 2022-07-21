@@ -12,6 +12,14 @@ export default {
     }
   },
 
+  getClassAnnotation(_store, { classId }) {
+    return api.get(`classes/${classId}/update_annotation/`);
+  },
+
+  setClassMood(_store, { classId, mood }) {
+    return api.put(`classes/${classId}/rating_mood/`, { mood });
+  },
+
   async fetchSingleModule({ commit }, moduleID) {
     commit('SINGLE_MODULE_REQUEST');
 
