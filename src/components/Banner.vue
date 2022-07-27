@@ -90,7 +90,7 @@ export default {
         []
       );
       const lesson = classes?.find((lesson) => {
-        return !lesson.watched.watched;
+        return !lesson.lesson_monitoring.watched;
       });
 
       return lesson;

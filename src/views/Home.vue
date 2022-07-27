@@ -26,8 +26,13 @@
         class="section__item"
       >
         <div class="section__item__header">
-
-          <h2>{{ category.title }}</h2>
+          <div class="section__item__header-left">
+            <unnnic-circle-progress-bar
+              :progress="getAllCompletedClasses(category)"
+              :totalProgress="getAllClasses(category)"
+            />
+            <h2>{{ category.title }}</h2>
+          </div>
           <div>
             <router-link :to="{ name: 'ClassesListAll', params: { id_category: category.id } }">Ver tudo</router-link>
             <unnnic-button-icon
@@ -66,7 +71,7 @@
                 class="card"
                 :title="grade.title"
                 :description="grade.description"
-                :checked="grade.watched.watched"
+                :checked="grade.lesson_monitoring.watched"
               />
             </router-link>
           </SwiperSlide>
@@ -131,6 +136,17 @@ export default {
     nextSlide(index) {
       this.$refs.mySwiperRef[index].$swiper.slideNext();
     },
+    getAllClasses(category){
+      return category.class_set.length;
+    },
+    getAllCompletedClasses(category){
+      const number = category.class_set.reduce((acumulator, lesson) => {
+        if (lesson.lesson_monitoring.watched) acumulator++;
+        return acumulator;
+      }, 0);
+
+      return number;
+    }
   },
   computed: {
     ...mapGetters(['currentModule']),
@@ -153,6 +169,10 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &-left {
+      gap: $unnnic-spacing-stack-sm;
+    }
 
     h2 {
       font: $unnnic-font-size-title-sm $unnnic-font-family-secondary;
