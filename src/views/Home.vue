@@ -141,7 +141,7 @@ export default {
     },
     getAllCompletedClasses(category){
       const number = category.class_set.reduce((acumulator, lesson) => {
-        if (lesson.watched.watched) acumulator++;
+        if (lesson.lesson_monitoring.watched) acumulator++;
         return acumulator;
       }, 0);
 
