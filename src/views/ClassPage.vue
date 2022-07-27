@@ -57,7 +57,7 @@
             </div>
             
           --></div>
-          <unnnic-tab v-model="currentTab" :tabs="['overview', 'materials', 'comments']">
+          <unnnic-tab v-model="currentTab" :tabs="['overview'/* , 'materials' */, 'comments']">
             <template slot="tab-head-overview">Visão Geral</template>
             <template slot="tab-panel-overview">
               <div class="overview-container">
