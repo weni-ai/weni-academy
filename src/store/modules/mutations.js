@@ -23,7 +23,7 @@ export default {
 
   //CLASS
   TOGGLE_CHECK_CLASS_REQUEST: (state, { value, getters }) => {
-    getters.currentClass.watched.watched = value;
+    getters.currentClass.lesson_monitoring.watched = value;
     state.loadingToggleCurrentClass = true;
   },
   TOGGLE_CHECK_CLASS__SUCCESS: (state, watched_percentage) => {
@@ -36,6 +36,6 @@ export default {
   TOGGLE_CHECK_CLASS_ERROR: (state, { error, getters, value }) => {
     state.error = error;
     state.loadingSingleModule = false;
-    getters.currentClass.watched.watched = !value;
+    getters.currentClass.lesson_monitoring.watched = !value;
   },
 }

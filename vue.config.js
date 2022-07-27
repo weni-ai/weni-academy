@@ -1,3 +1,5 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = {
   css: {
     loaderOptions: {
@@ -8,5 +10,17 @@ module.exports = {
         `,
       },
     },
+  },
+  configureWebpack: {
+    plugins: [
+      new CopyWebpackPlugin(
+        [
+          {
+            from: 'node_modules/@weni/unnnic-system/dist/img',
+            to: './js/img',
+          },
+        ],
+      ),
+    ],
   },
 };

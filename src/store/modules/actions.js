@@ -12,6 +12,28 @@ export default {
     }
   },
 
+  createClassComment(_store, { classId, text }) {
+    return api.post(`classes/${classId}/comment/`, {
+      text,
+    });
+  },
+
+  getClassComments(_store, { classId }) {
+    return api.get(`classes/${classId}/comment/`);
+  },
+
+  getClassAnnotation(_store, { classId }) {
+    return api.get(`classes/${classId}/update_annotation/`);
+  },
+
+  setClassAnnotation(_store, { classId, annotation }) {
+    return api.put(`classes/${classId}/update_annotation/`, { annotation });
+  },
+
+  setClassMood(_store, { classId, mood }) {
+    return api.put(`classes/${classId}/rating_mood/`, { mood });
+  },
+
   async fetchSingleModule({ commit }, moduleID) {
     commit('SINGLE_MODULE_REQUEST');
 

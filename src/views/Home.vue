@@ -71,7 +71,7 @@
                 class="card"
                 :title="grade.title"
                 :description="grade.description"
-                :checked="grade.watched.watched"
+                :checked="grade.lesson_monitoring.watched"
               />
             </router-link>
           </SwiperSlide>
