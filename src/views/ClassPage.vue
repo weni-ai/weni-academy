@@ -104,7 +104,7 @@
                   v-for="comment in comments"
                   :key="comment.id"
                   :title="comment.name"
-                  :time="`- ${comment.created_at}`"
+                  :time="`- ${fromNow(comment.created_at)}`"
                   :text="comment.text"
                   class="comment"
                 >
@@ -178,6 +178,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import moment from 'moment';
+import 'moment/locale/pt-br';
+moment.locale('pt-br');
 
 export default {
   name: "Home",
@@ -244,7 +247,7 @@ export default {
       this.getClassComments({
         classId: this.currentClass.id,
       }).then(({ data }) => {
-        this.comments = data.comments;
+        this.comments = data.comments.reverse();
       });
 
       const classes =
@@ -269,6 +272,10 @@ export default {
         this.nextClassCommentsCount = null;
         this.nextClass = null;
       }
+    },
+
+    fromNow(date) {
+      return moment(date).fromNow();
     },
 
     async setMood($event) {
