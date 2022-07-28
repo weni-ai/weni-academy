@@ -71,6 +71,7 @@
                 class="card"
                 :title="grade.title"
                 :description="grade.description"
+                :score="grade.average_rating ? grade.average_rating.toFixed(1) : null"
                 :checked="grade.lesson_monitoring.watched"
               />
             </router-link>

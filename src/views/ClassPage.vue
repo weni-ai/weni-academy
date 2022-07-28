@@ -142,8 +142,8 @@
               <unnnic-card-data
                 :title="nextClass.title"
                 :description="nextClass.description"
-                :score="nextClass.rating"
-                :info="nextClass.comments && `(${nextClass.comments} comments)`"
+                :score="nextClass.average_rating ? nextClass.average_rating.toFixed(1) : null"
+                :info="nextClassCommentsCount !== null ? `(${nextClassCommentsCount} comentários)` : null"
                 :checked="nextClass.lesson_monitoring.watched"
               />
             </router-link>
@@ -211,23 +211,11 @@ export default {
 
       isSavingNotes: false,
       lastCallSaveNotes: null,
+
+      nextClassCommentsCount: null,
+
+      nextClass: null,
     };
-  },
-
-  created() {
-    this.mood = this.currentClass.lesson_monitoring.mood;
-
-    this.getClassAnnotation({
-      classId: this.currentClass.id,
-    }).then(({ data }) => {
-      this.notes = data.text;
-    });
-
-    this.getClassComments({
-      classId: this.currentClass.id,
-    }).then(({ data }) => {
-      this.comments = data.comments;
-    });
   },
 
   methods: {
@@ -239,6 +227,49 @@ export default {
       'createClassComment',
       'getClassComments',
     ]),
+
+    init() {
+      this.mood = this.currentClass.lesson_monitoring.mood;
+
+      this.notes = '';
+
+      this.getClassAnnotation({
+        classId: this.currentClass.id,
+      }).then(({ data }) => {
+        this.notes = data.text;
+      });
+
+      this.comments = [];
+
+      this.getClassComments({
+        classId: this.currentClass.id,
+      }).then(({ data }) => {
+        this.comments = data.comments;
+      });
+
+      const classes =
+          this.currentModule.category_set
+            .map((categories) => categories.class_set)
+            .flat();
+        
+      const indexCurrentClass =
+        classes
+          .findIndex((classItem) => classItem.id === this.currentClass.id);
+      
+      if (indexCurrentClass !== -1 && classes[indexCurrentClass + 1]) {
+        this.nextClass = classes[indexCurrentClass + 1];
+
+        // temporary: the amount of comments should be already loaded in classes list
+        this.getClassComments({
+          classId: this.nextClass.id,
+        }).then(({ data }) => {
+          this.nextClassCommentsCount = data.comments.length;
+        });
+      } else {
+        this.nextClassCommentsCount = null;
+        this.nextClass = null;
+      }
+    },
 
     async setMood($event) {
       const mood = $event === null ? 0 : $event;
@@ -321,23 +352,15 @@ export default {
     isNotesYellowed() {
       return !this.isNotesFocused && this.notes;
     },
+  },
 
-    nextClass() {
-      const classes =
-        this.currentModule.category_set
-          .map((categories) => categories.class_set)
-          .flat();
-      
-      const indexCurrentClass =
-        classes
-          .findIndex((classItem) => classItem.id === this.currentClass.id);
-      
-      if (indexCurrentClass !== -1 && classes[indexCurrentClass + 1]) {
-        return classes[indexCurrentClass + 1];
-      } else {
-        return null;
-      }
-    },
+  watch: {
+    'currentClass.id': {
+      immediate: true,
+      handler() {
+        this.init();
+      },
+    }
   },
 };
 </script>
