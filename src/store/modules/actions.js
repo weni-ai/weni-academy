@@ -18,6 +18,14 @@ export default {
     });
   },
 
+  removeClassComment(_store, { classId, commentId }) {
+    return api.delete(`classes/${classId}/comment/`, {
+      data: {
+        comment_id: commentId,
+      },
+    });
+  },
+
   getClassComments(_store, { classId }) {
     return api.get(`classes/${classId}/comment/`);
   },

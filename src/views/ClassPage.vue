@@ -112,6 +112,28 @@
                     slot="avatar"
                     :src="comment.avatar"
                   />
+
+                  <unnnic-dropdown v-if="connectUserEmail === comment.name" slot="actions" class="comment-options">
+                    <unnnic-icon-svg
+                      slot="trigger"
+                      icon="navigation-menu-vertical-1"
+                      size="sm"
+                      scheme="neutral-clean"
+                    />
+
+                    <!-- <div class="option">
+                      <unnnic-icon icon="pencil-write-1" size="sm" scheme="neutral-dark" />
+                      Editar comentário
+                    </div>
+
+                    <div class="divider"></div> -->
+
+                    <div @click="removeComment(comment.id)" class="option danger">
+                      <unnnic-icon v-if="removingComments.includes(comment.id)" class="spin" size="sm" icon="loading-circle-1" scheme="neutral-dark" />
+                      <unnnic-icon v-else icon="delete-1" size="sm" scheme="feedback-red" />
+                      Excluir comentário
+                    </div>
+                  </unnnic-dropdown>
                 </unnnic-comment>
               </div>
             </template>
@@ -218,7 +240,26 @@ export default {
       nextClassCommentsCount: null,
 
       nextClass: null,
+
+      removingComments: [],
+
+      connectUserEmail: '',
     };
+  },
+
+  mounted() {
+    window.addEventListener("message", (event) => {
+      if (event.data?.event === "userInfo") {
+        this.connectUserEmail = event.data.email;
+      }
+    });
+
+    window.parent.postMessage(
+      {
+        event: "getUserInfo",
+      },
+      "*"
+    );
   },
 
   methods: {
@@ -228,6 +269,7 @@ export default {
       'getClassAnnotation',
       'setClassAnnotation',
       'createClassComment',
+      'removeClassComment',
       'getClassComments',
     ]),
 
@@ -276,6 +318,23 @@ export default {
 
     fromNow(date) {
       return moment(date).fromNow();
+    },
+
+    async removeComment(commentId) {
+      if (this.removingComments.includes(commentId)) {
+        return;
+      }
+
+      this.removingComments.push(commentId);
+
+      await this.removeClassComment({
+        classId: this.currentClass.id,
+        commentId: commentId,
+      });
+
+      this.removingComments.splice(this.removingComments.indexOf(commentId), 1);
+
+      this.comments.splice(this.comments.findIndex(({ id }) => id === commentId), 1);
     },
 
     async setMood($event) {
@@ -637,6 +696,48 @@ aside {
 
   .comment + .comment {
     margin-top: $unnnic-spacing-stack-md;
+  }
+}
+
+.comment-options {
+  ::v-deep .unnnic-dropdown__content {
+    padding: 0;
+    cursor: initial;
+  }
+
+  .option {
+    padding: $unnnic-spacing-stack-xs $unnnic-spacing-inline-sm;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+    font-family: $unnnic-font-family-secondary;
+    font-weight: $unnnic-font-weight-regular;
+    font-size: $unnnic-font-size-body-md;
+    line-height: $unnnic-font-size-body-md + $unnnic-line-height-md;
+    color: $unnnic-color-neutral-dark;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+
+    &.danger {
+      color: $unnnic-color-feedback-red;
+
+      ::v-deep .unnnic-icon path {
+        fill: #ff4545;
+      }
+    }
+
+    ::v-deep .unnnic-icon {
+      margin-right: $unnnic-spacing-inline-xs;
+    }
+  }
+
+  .divider {
+    margin: $unnnic-spacing-stack-xs $unnnic-spacing-inline-sm;
+    width: 100%;
+    height: $unnnic-border-width-thinner;
+    background-color: $unnnic-color-neutral-lightest;
   }
 }
 
