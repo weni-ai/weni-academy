@@ -22,7 +22,7 @@
             <unnnic-card-data
               :title="course.title"
               :description="course.description"
-              :score="course.rating"
+              :score="course.average_rating ? course.average_rating.toFixed(1) : null"
               :info="course.comments && `(${course.comments} comments)`"
               :checked="course.lesson_monitoring.watched"
             />
