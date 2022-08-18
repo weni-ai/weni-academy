@@ -72,6 +72,7 @@
                 :title="grade.title"
                 :description="grade.description"
                 :score="grade.average_rating ? grade.average_rating.toFixed(1) : null"
+                :info="grade.lesson_monitoring.comment_count !== null ? `(${grade.lesson_monitoring.comment_count} comentários)` : null"
                 :checked="grade.lesson_monitoring.watched"
               />
             </router-link>
