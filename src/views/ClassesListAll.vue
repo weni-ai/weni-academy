@@ -22,8 +22,8 @@
             <unnnic-card-data
               :title="course.title"
               :description="course.description"
-              :score="course.rating"
-              :info="course.comments && `(${course.comments} comments)`"
+              :score="course.average_rating ? course.average_rating.toFixed(1) : null"
+              :info="course.lesson_monitoring.comment_count !== null ? `(${course.lesson_monitoring.comment_count} comentários)` : null"
               :checked="course.lesson_monitoring.watched"
             />
           </router-link>
