@@ -19,8 +19,8 @@ jobs:
               echo "Found environment: DEVELOP - $TAG"
               echo "MANIFESTS_ENVIRONMENT=develop" >> $GITHUB_ENV
               echo "MANIFESTS_ENVIRONMENT=develop"
-              echo "TAG=$TAG" >> $GITHUB_ENV
-              echo "TAG=$TAG"
+              echo "TAG=front-$TAG" >> $GITHUB_ENV
+              echo "TAG=front-$TAG"
               VERSION=${TAG#v} 
               echo "VERSION=$VERSION" >> $GITHUB_ENV
               echo "VERSION=$VERSION"
@@ -33,8 +33,8 @@ jobs:
               echo "Found environment: STAGING - $TAG"
               echo "MANIFESTS_ENVIRONMENT=staging" >> $GITHUB_ENV
               echo "MANIFESTS_ENVIRONMENT=staging"
-              echo "TAG=$TAG" >> $GITHUB_ENV
-              echo "TAG=$TAG"
+              echo "TAG=front-$TAG" >> $GITHUB_ENV
+              echo "TAG=front-$TAG"
               VERSION=${TAG#v} 
               echo "VERSION=$VERSION" >> $GITHUB_ENV
               echo "VERSION=$VERSION"
@@ -47,8 +47,8 @@ jobs:
               echo "No environment found, assuming: PRODUCTION - $TAG"
               echo "MANIFESTS_ENVIRONMENT=production" >> $GITHUB_ENV
               echo "MANIFESTS_ENVIRONMENT=production"
-              echo "TAG=$TAG" >> $GITHUB_ENV
-              echo "TAG=$TAG"
+              echo "TAG=front-$TAG" >> $GITHUB_ENV
+              echo "TAG=front-$TAG"
               VERSION=${TAG#v} 
               echo "VERSION=$VERSION" >> $GITHUB_ENV
               echo "VERSION=$VERSION"
@@ -89,7 +89,10 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          labels: branch=${{env.TAG}},commit=${{env.COMMIT_SHA}},repository=https://github.com/Ilhasoft/weni-academy
+          labels: |
+            tag=${{env.TAG}}
+            commit=${{env.COMMIT_SHA}}
+            repository=https://github.com/Ilhasoft/weni-academy
           file: docker/Dockerfile
           push: true
           tags: ${{ secrets.ECR }}/weni-academy-${{env.TAG}}
@@ -108,7 +111,7 @@ jobs:
       - name: Set variable tag for jq
         # This is the variable with complete image name
         run: |
-          echo "IMAGE_TAG=${{ secrets.ECR }}/chats:engine-$TAG" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${{ secrets.ECR }}/weni-academy-$TAG" >> $GITHUB_ENV
 
       - name: Update image on deployment
         run: |
