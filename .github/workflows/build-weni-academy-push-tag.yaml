@@ -93,7 +93,7 @@ jobs:
             tag=${{env.TAG}}
             commit=${{env.COMMIT_SHA}}
             repository=https://github.com/Ilhasoft/weni-academy
-          file: docker/Dockerfile
+          file: Dockerfile
           push: true
           tags: ${{ secrets.ECR }}/weni-academy-${{env.TAG}}
           no-cache: true
