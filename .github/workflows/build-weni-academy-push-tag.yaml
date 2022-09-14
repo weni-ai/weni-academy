@@ -14,7 +14,7 @@ jobs:
       - name: Set variables
         run: |
             TAG=$(echo $GITHUB_REF|cut -d"/" -f3)
-            if $(echo  $TAG|grep --silent -e '*.*.*-develop')
+            if $(echo  $TAG|grep --silent -e 'v*.*.*-develop')
             then 
               echo "Found environment: DEVELOP - $TAG"
               echo "MANIFESTS_ENVIRONMENT=develop" >> $GITHUB_ENV
@@ -28,7 +28,7 @@ jobs:
               echo "COMMIT_SHA=$GITHUB_SHA"
               echo "IMAGE_TAG=${{ secrets.ECR }}/weni-academy:$TAG" >> $GITHUB_ENV
               echo "IMAGE_TAG=${{ secrets.ECR }}/weni-academy:$TAG"
-            elif $(echo  $TAG|grep --silent -e '*.*.*-staging')
+            elif $(echo  $TAG|grep --silent -e 'v*.*.*-staging')
             then 
               echo "Found environment: STAGING - $TAG"
               echo "MANIFESTS_ENVIRONMENT=staging" >> $GITHUB_ENV
@@ -42,7 +42,7 @@ jobs:
               echo "COMMIT_SHA=$GITHUB_SHA"
               echo "IMAGE_TAG=${{ secrets.ECR }}/weni-academy:$TAG" >> $GITHUB_ENV
               echo "IMAGE_TAG=${{ secrets.ECR }}/weni-academy:$TAG"
-            elif $(echo  $TAG|grep --silent -e '*.*.*')
+            elif $(echo  $TAG|grep --silent -e 'v*.*.*')
             then 
               echo "No environment found, assuming: PRODUCTION - $TAG"
               echo "MANIFESTS_ENVIRONMENT=production" >> $GITHUB_ENV
