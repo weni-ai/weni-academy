@@ -14,7 +14,7 @@ jobs:
       - name: Set variables
         run: |
             TAG=$(echo $GITHUB_REF|cut -d"/" -f3)
-            if $(echo  $TAG|grep --silent -e '*.*.*-develop*')
+            if $(echo  $TAG|grep --silent -e '*.*.*-develop')
             then 
               echo "Found environment: DEVELOP - $TAG"
               echo "MANIFESTS_ENVIRONMENT=develop" >> $GITHUB_ENV
