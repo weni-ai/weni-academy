@@ -3,8 +3,8 @@ name: Build Weni Academy in Shared (Push Tag)
 on:
   push:
     tags:
-      - '*.*.*-develop*'
-      - '*.*.*-staging*'
+      - '*.*.*-develop'
+      - '*.*.*-staging'
       - '*.*.*'
 
 jobs:
@@ -13,6 +13,7 @@ jobs:
     steps:
       - name: Set variables
         run: |
+            echo $GITHUB_REF
             TAG=$(echo $GITHUB_REF|cut -d"/" -f3)
             if $(echo  $TAG|grep --silent -e '*.*.*-develop')
             then 
