@@ -21,7 +21,7 @@ jobs:
               echo "MANIFESTS_ENVIRONMENT=develop"
               echo "TAG=front-$TAG" >> $GITHUB_ENV
               echo "TAG=front-$TAG"
-              VERSION=${TAG#v} 
+              VERSION=${TAG#} 
               echo "VERSION=$VERSION" >> $GITHUB_ENV
               echo "VERSION=$VERSION"
               echo "COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
@@ -35,7 +35,7 @@ jobs:
               echo "MANIFESTS_ENVIRONMENT=staging"
               echo "TAG=front-$TAG" >> $GITHUB_ENV
               echo "TAG=front-$TAG"
-              VERSION=${TAG#v} 
+              VERSION=${TAG#} 
               echo "VERSION=$VERSION" >> $GITHUB_ENV
               echo "VERSION=$VERSION"
               echo "COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
@@ -49,7 +49,7 @@ jobs:
               echo "MANIFESTS_ENVIRONMENT=production"
               echo "TAG=front-$TAG" >> $GITHUB_ENV
               echo "TAG=front-$TAG"
-              VERSION=${TAG#v} 
+              VERSION=${TAG#} 
               echo "VERSION=$VERSION" >> $GITHUB_ENV
               echo "VERSION=$VERSION"
               echo "COMMIT_SHA=$GITHUB_SHA" >> $GITHUB_ENV
