@@ -10,7 +10,7 @@ import 'swiper/swiper-bundle.css'
 
 import getEnv from './utils/env'
 
-LogRocket.init('lqshel/test-weni-webapp', {
+LogRocket.init(getEnv('VUE_APP_LOGROCKET_ID'), {
   mergeIframes: true,
   parentDomain: getEnv('VUE_APP_PARENT_DOMAIN'),
 });
