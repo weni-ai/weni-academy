@@ -60,6 +60,7 @@ jobs:
               echo 'Not a valid tag. Skipping...'
               exit 1
             fi
+
       - name: Check out the repo
         uses: actions/checkout@v2
         with:
@@ -111,6 +112,7 @@ jobs:
         # This is the variable with complete image name
         run: |
           echo "IMAGE_TAG=${{ secrets.ECR }}/weni-academy:$TAG" >> $GITHUB_ENV
+
       - name: Update image on deployment
         run: |
             which jq > /dev/null 2>&1 || ( sudo apt update ; sudo apt install -y jq )
@@ -156,6 +158,7 @@ jobs:
                 fi
               fi
             done
+
       - name: Commit & Push changes
         # Once made a change, commit new configuration
         uses: actions-js/push@master
