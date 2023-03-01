@@ -209,6 +209,13 @@ export default {
 
     .card {
       height: 100%;
+      /deep/ .description {
+        height: 72px;
+        overflow: hidden;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+      }
     }
   }
 }
