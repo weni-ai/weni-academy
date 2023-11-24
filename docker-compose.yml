@@ -10,4 +10,4 @@ services:
       - VUE_APP_PARENT_DOMAIN=${VUE_APP_PARENT_DOMAIN:-teste}
       - VUE_APP_LOGROCKET_ID=${VUE_APP_LOGROCKET_ID:-teste}
     ports:
-      - 80:80
+      - 8080:8080
