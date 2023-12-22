@@ -36,6 +36,7 @@ WORKDIR /home/app
 USER ${APP_USER}:${APP_GROUP}
 
 EXPOSE 8080
+RUN chmod +x /usr/share/nginx/docker-entrypoint.sh
 ENTRYPOINT ["/usr/share/nginx/docker-entrypoint.sh"]
 
 CMD ["nginx", "-g", "daemon off;"]
