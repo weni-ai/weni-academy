@@ -1,10 +1,13 @@
-FROM node:14-alpine as builder
+# syntax = docker/dockerfile:1
+
+ARG NODE_VERSION="14.17.4"
+ARG BASE_VERSION="alpine3.14"
+
+FROM node:${NODE_VERSION}-${BASE_VERSION} as builder
 
 WORKDIR /home/app
 
-RUN apk --no-cache update && \
-    apk --no-cache add git yarn && \
-    yarn global add @vue/cli
+RUN apk --no-cache add git
 
 COPY package.json yarn.lock ./
 
@@ -15,30 +18,15 @@ COPY . .
 
 RUN yarn build
 
-FROM nginx:1.24-alpine
+FROM nginxinc/nginx-unprivileged:1.25-alpine
 
-ENV APP_USER=app \
-    APP_GROUP=app \
-    USER_ID=1999 \
-    GROUP_ID=1999
-
-RUN addgroup --system --gid ${GROUP_ID} ${APP_GROUP} \
-    && adduser --system --disabled-password --home /home/${APP_USER} \
-    --uid ${USER_ID} --ingroup ${APP_GROUP} ${APP_USER}
-
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder --chown=${APP_USER}:${APP_GROUP} /home/app/dist /usr/share/nginx/html/academy
-
-COPY docker-entrypoint.sh /usr/share/nginx/
-
-WORKDIR /home/app
-
-USER ${APP_USER}:${APP_GROUP}
+COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder --chown=nginx:nginx /home/app/dist /usr/share/nginx/html/academy/
+COPY docker-entrypoint.sh /
+RUN mv /usr/share/nginx/html/academy/index.html /usr/share/nginx/html/academy/index.html.tmpl \
+    && cd /usr/share/nginx/html/academy/ \
+    && ln -s /tmp/index.html
 
 EXPOSE 8080
-RUN chmod +x /usr/share/nginx/docker-entrypoint.sh
-ENTRYPOINT ["/usr/share/nginx/docker-entrypoint.sh"]
-
+ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
-
-# COPY config.js.tmpl /usr/share/nginx/html/academy/
