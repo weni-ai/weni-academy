@@ -5,7 +5,7 @@ ARG BASE_VERSION="alpine3.14"
 
 FROM node:${NODE_VERSION}-${BASE_VERSION} as builder
 
-WORKDIR /home/app
+WORKDIR /app
 
 RUN apk --no-cache add git
 
@@ -21,7 +21,7 @@ RUN yarn build
 FROM nginxinc/nginx-unprivileged:1.25-alpine
 
 COPY --chown=nginx:nginx nginx.conf /etc/nginx/nginx.conf
-COPY --from=builder --chown=nginx:nginx /home/app/dist /usr/share/nginx/html/academy/
+COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html/academy/
 COPY docker-entrypoint.sh /
 RUN mv /usr/share/nginx/html/academy/index.html /usr/share/nginx/html/academy/index.html.tmpl \
     && cd /usr/share/nginx/html/academy/ \
