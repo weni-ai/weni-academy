@@ -10,9 +10,9 @@
   "dependencies": {
     "@vue/compat": "^3.4.21",
     "@weni/unnnic-system": "^2.0.0-beta.0",
-    "axios": "^0.26.0",
-    "logrocket": "^2.2.0",
-    "moment": "^2.29.4",
+    "axios": "^1.6.7",
+    "logrocket": "^8.1.0",
+    "moment": "^2.30.1",
     "swiper": "^11.0.7",
     "vue": "^3.3.11",
     "vue-awesome-swiper": "^5.0.1",
