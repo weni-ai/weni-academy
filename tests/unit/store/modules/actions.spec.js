@@ -6,8 +6,6 @@ jest.mock("axios", () => ({
       if (mockError)
         throw Error()
 
-      url = _url
-      body = _body
       resolve(true)
     })
   }
