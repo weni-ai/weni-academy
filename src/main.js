@@ -1,9 +1,11 @@
-import Vue from 'vue'
+import { createApp } from "vue";
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
 import LogRocket from 'logrocket';
+
+import Unnnic from './utils/plugins/UnnnicSystem';
 
 // import style (>= Swiper 6.x)
 import 'swiper/swiper-bundle.css'
@@ -15,16 +17,14 @@ LogRocket.init(getEnv('VUE_APP_LOGROCKET_ID'), {
   parentDomain: getEnv('VUE_APP_PARENT_DOMAIN'),
 });
 
-Vue.use(VueAwesomeSwiper)
+const app = createApp(App);
 
-Vue.config.productionTip = false
+app.use(router);
+app.use(store);
+app.use(VueAwesomeSwiper);
+app.use(Unnnic);
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount('#app')
-
+app.mount("#app");
 function enableLinkTranslations() {
   let connectBaseURL = '';
 

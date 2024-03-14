@@ -7,8 +7,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import "@weni/unnnic-system";
-import Header from "@/components/Header";
+import Header from "@/components/Header.vue";
 export default {
   name: "app",
   components: {
