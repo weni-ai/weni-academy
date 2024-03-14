@@ -1,4 +1,4 @@
-import { api } from "@/services/api";
+import { api } from '@/services/api';
 
 export default {
   async fetchModules({ commit }) {
@@ -53,20 +53,20 @@ export default {
     }
   },
 
-  async toggleCheckClass({ commit, getters }, {classID, value}) {
+  async toggleCheckClass({ commit, getters }, { classID, value }) {
     commit('TOGGLE_CHECK_CLASS_REQUEST', { value, getters });
     try {
       const { data } = await api.patch(`classes/${classID}/update_watched/`, {
-        watched: value
+        watched: value,
       });
       commit('TOGGLE_CHECK_CLASS__SUCCESS', data.watched_percentage);
     } catch (error) {
       commit('TOGGLE_CHECK_CLASS_ERROR', { error, getters, value });
     }
-  }
+  },
 
   // setCurrentModule({ commit }, moduleID){
 
   //   commit('SET_CURRENT_MODULE', module)
   // }
-}
+};

@@ -1,10 +1,10 @@
 import router from '@/router';
 
 export default {
-  currentModule(state){
+  currentModule(state) {
     const id = router.app.$route.params.module_id;
 
-    return state.modules.find((item)=> {
+    return state.modules.find((item) => {
       return item.id == id;
     });
   },
@@ -30,12 +30,12 @@ export default {
   },
   getTotalCompletedClasses(state, getters) {
     const category = getters.currentCategory;
-    
+
     const number = category?.class_set.reduce((acumulator, lesson) => {
       if (lesson.lesson_monitoring.watched) acumulator++;
       return acumulator;
     }, 0);
 
     return number;
-  }
+  },
 };
