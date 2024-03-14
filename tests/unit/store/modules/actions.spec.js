@@ -1,7 +1,7 @@
 let mockError = false
 
 jest.mock("axios", () => ({
-  get: (_url, _body) => {
+  get: () => {
     return new Promise((resolve) => {
       if (mockError)
         throw Error()
