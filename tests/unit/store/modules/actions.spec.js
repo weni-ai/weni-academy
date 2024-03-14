@@ -1,17 +1,11 @@
-import actions from '@/store/modules/actions';
-
-let url = ''
-let body = {}
 let mockError = false
 
 jest.mock("axios", () => ({
-  get: (_url, _body) => { 
+  get: () => {
     return new Promise((resolve) => {
-      if (mockError) 
+      if (mockError)
         throw Error()
 
-      url = _url
-      body = _body
       resolve(true)
     })
   }
