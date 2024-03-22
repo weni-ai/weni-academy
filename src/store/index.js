@@ -1,33 +1,20 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-import Modules from './modules';
-import Header from './header';
+import { defineStore } from 'pinia';
 
 import { api } from '@/services/api';
 
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  state: {
+export const useLoginStore = defineStore('login', {
+  state: () => ({
     token: '',
-  },
-  mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token;
+  }),
+  actions: {
+    SET_TOKEN(token) {
+      this.token = token;
       api.defaults.headers.common['Authorization'] = token;
       localStorage.setItem('token', token);
     },
+    externalLogin(token) {
+      if (!token) return;
+      this.SET_TOKEN(token);
+    },
   },
-  actions: {
-    externalLogin({ commit }, token){
-      if(!token) return;
-      //TO-DO HANDLE ERROR
-      commit('SET_TOKEN', token)
-    }
-  },
-  modules: {
-    Modules,
-    Header
-  }
-})
+});

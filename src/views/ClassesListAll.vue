@@ -2,7 +2,7 @@
   <div class="listAllContainer">
     <main>
       <div class="header">
-        <unnnic-circle-progress-bar
+        <UnnnicCircleProgressBar
           :progress="getTotalCompletedClasses"
           :totalProgress="getTotalClasses"
         />
@@ -10,8 +10,11 @@
       </div>
 
       <ul class="course-list">
-        <li v-for="course in currentCategory.class_set" :key="course.id">
-          <router-link
+        <li
+          v-for="course in currentCategory.class_set"
+          :key="course.id"
+        >
+          <RouterLink
             :to="{
               name: 'ClassPage',
               params: {
@@ -19,14 +22,20 @@
               },
             }"
           >
-            <unnnic-card-data
+            <UnnnicCardData
               :title="course.title"
               :description="course.description"
-              :score="course.average_rating ? course.average_rating.toFixed(1) : null"
-              :info="course.lesson_monitoring.comment_count !== null ? `(${course.lesson_monitoring.comment_count} comentários)` : null"
+              :score="
+                course.average_rating ? course.average_rating.toFixed(1) : null
+              "
+              :info="
+                course.lesson_monitoring.comment_count !== null
+                  ? `(${course.lesson_monitoring.comment_count} comentários)`
+                  : null
+              "
               :checked="course.lesson_monitoring.watched"
             />
-          </router-link>
+          </RouterLink>
         </li>
       </ul>
 
@@ -40,19 +49,30 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { useModulesStore } from '@/store/modules';
 
 export default {
-  name: "ListAllClasses",
+  name: 'ListAllClasses',
   data() {
     return {
+      modulesStore: useModulesStore(),
       page: 1,
       hasMovie: true,
     };
   },
 
   computed: {
-    ...mapGetters(['currentCategory', 'getTotalClasses', 'getTotalCompletedClasses']),
+    currentCategory() {
+      return this.modulesStore.currentCategory;
+    },
+
+    getTotalClasses() {
+      return this.modulesStore.getTotalClasses;
+    },
+
+    getTotalCompletedClasses() {
+      return this.modulesStore.getTotalCompletedClasses;
+    },
   },
 };
 </script>

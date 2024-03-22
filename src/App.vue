@@ -1,20 +1,20 @@
 <template>
   <div id="app">
     <Header v-show="currentRouteName !== 'Onboarding'" />
-    <router-view />
+    <RouterView />
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Header from "@/components/Header.vue";
+import Header from '@/components/Header.vue';
+
 export default {
-  name: "app",
+  name: 'app',
   components: {
+    // eslint-disable-next-line vue/no-reserved-component-names
     Header,
   },
   computed: {
-    ...mapGetters(["currentModule"]),
     currentRouteName() {
       return this.$route.name;
     },
@@ -25,13 +25,13 @@ export default {
   mounted() {
     window.parent.postMessage(
       {
-        event: "getConnectBaseURL",
+        event: 'getConnectBaseURL',
       },
-      "*"
+      '*',
     );
-    window.addEventListener("message", (event) => {
+    window.addEventListener('message', (event) => {
       const eventName = event.data && event.data.event;
-      if (eventName === "setConnectBaseURL") {
+      if (eventName === 'setConnectBaseURL') {
         this.connectBaseURL = event.data.connectBaseURL;
         this.translateAllLinks();
       }
@@ -43,45 +43,44 @@ export default {
         return;
       }
       const url = new URL(this.connectBaseURL);
-      const debug = url.host && url.host.includes("develop");
-      document.querySelectorAll("a[href]").forEach((link) => {
+      const debug = url.host && url.host.includes('develop');
+      document.querySelectorAll('a[href]').forEach((link) => {
         const internalHref =
-          link.getAttribute("internal-href") || link.getAttribute("href");
+          link.getAttribute('internal-href') || link.getAttribute('href');
         if (
-          ["http://", "https://"].some((initial) =>
-            internalHref.startsWith(initial)
+          ['http://', 'https://'].some((initial) =>
+            internalHref.startsWith(initial),
           )
         ) {
           return;
         }
         const dashHref = this.connectBaseURL + internalHref;
         if (link.translateLinkConnect) {
-          if (link.getAttribute("href") === dashHref) {
+          if (link.getAttribute('href') === dashHref) {
             return;
           }
-          link.removeEventListener("click", link.translateLinkConnect);
+          link.removeEventListener('click', link.translateLinkConnect);
         }
-        link.setAttribute("internal-href", internalHref);
-        link.setAttribute("href", dashHref);
+        link.setAttribute('internal-href', internalHref);
+        link.setAttribute('href', dashHref);
         const randomId = Math.floor(Math.random() * 100);
         link.addEventListener(
-          "click",
+          'click',
           (link.translateLinkConnect = () => {
             if (debug) {
               console.log(`TranslateLinkConnectId ${randomId}`);
             }
-            link.setAttribute("href", internalHref);
+            link.setAttribute('href', internalHref);
             setTimeout(() => {
-              link.setAttribute("href", dashHref);
+              link.setAttribute('href', dashHref);
             }, 0);
-          })
+          }),
         );
       });
     },
   },
 };
 </script>
-
 
 <style lang="scss">
 * {

@@ -4,7 +4,7 @@ import ClassesListAll from '@/views/ClassesListAll.vue';
 import Home from '@/views/Home.vue';
 import Onboarding from '@/views/Onboarding.vue';
 
-import store from '@/store';
+import { useLoginStore } from '@/store';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -43,9 +43,10 @@ const router = createRouter({
       name: 'externalLogin',
       component: null,
       beforeEnter: async (to, from, next) => {
+        const store = useLoginStore();
         const { token } = to.params;
-        store.dispatch('externalLogin', token.replace('+', ' '));
-        await store.dispatch('fetchModules');
+        store.externalLogin(token.replace('+', ' '));
+        await store.fetchModules();
         if (to.query.next) {
           next(to.query.next);
         } else {

@@ -19,7 +19,11 @@
         <template slot="tab-head-quarter">Canais</template>
         <template slot="tab-panel-quarter"><Channles /></template>
       </unnnic-tab> -->
-      <Banner :bgGradient="colors[modules.indexOf(currentModule) % colors.length]" :currentModule="currentModule" expanded />
+      <Banner
+        :bgGradient="colors[modules.indexOf(currentModule) % colors.length]"
+        :currentModule="currentModule"
+        expanded
+      />
       <section
         v-for="(category, index) in currentModule.category_set"
         :key="category.id"
@@ -27,22 +31,28 @@
       >
         <div class="section__item__header">
           <div class="section__item__header-left">
-            <unnnic-circle-progress-bar
+            <UnnnicCircleProgressBar
               :progress="getAllCompletedClasses(category)"
               :totalProgress="getAllClasses(category)"
             />
             <h2>{{ category.title }}</h2>
           </div>
           <div>
-            <router-link :to="{ name: 'ClassesListAll', params: { id_category: category.id } }">Ver tudo</router-link>
-            <unnnic-button-icon
+            <RouterLink
+              :to="{
+                name: 'ClassesListAll',
+                params: { id_category: category.id },
+              }"
+              >Ver tudo</RouterLink
+            >
+            <UnnnicButtonIcon
               type="secondary"
               size="small"
               icon="arrow-left-1-1"
               class=".swiper-button-prev"
               @click="backSlide(index)"
             />
-            <unnnic-button-icon
+            <UnnnicButtonIcon
               type="secondary"
               size="small"
               icon="arrow-right-1-1"
@@ -61,21 +71,27 @@
             v-for="grade in category.class_set"
             :key="grade.id"
           >
-            <router-link
+            <RouterLink
               :to="{
                 name: 'ClassPage',
                 params: { id_class: grade.id, id_category: category.id },
               }"
             >
-              <unnnic-card-data
+              <UnnnicCardData
                 class="card"
                 :title="grade.title"
                 :description="grade.description"
-                :score="grade.average_rating ? grade.average_rating.toFixed(1) : null"
-                :info="grade.lesson_monitoring.comment_count !== null ? `(${grade.lesson_monitoring.comment_count} comentários)` : null"
+                :score="
+                  grade.average_rating ? grade.average_rating.toFixed(1) : null
+                "
+                :info="
+                  grade.lesson_monitoring.comment_count !== null
+                    ? `(${grade.lesson_monitoring.comment_count} comentários)`
+                    : null
+                "
                 :checked="grade.lesson_monitoring.watched"
               />
-            </router-link>
+            </RouterLink>
           </SwiperSlide>
         </Swiper>
       </section>
@@ -88,31 +104,33 @@
 // import Fluxs from '@/components/tabs/fluxsTab.vue';
 // import HumanCare from '@/components/tabs/humanCare.vue';
 // import Ia from '@/components/tabs/iaTab.vue';
-import { mapActions, mapGetters, mapState } from "vuex";
-import { Swiper, SwiperSlide } from "vue-awesome-swiper";
-import Banner from "@/components/Banner.vue";
+import { useModulesStore } from '@/store/modules';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import Banner from '@/components/Banner.vue';
 
 export default {
-  name: "Home",
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Home',
   data() {
     return {
+      modulesStore: useModulesStore(),
       swiperOption: {
         slidesPerView: 3,
         spaceBetween: 16,
         navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
       },
       colors: [
-        "green-yellow",
-        "yellow-pink",
-        "pink-blue",
-        "red-blue",
-        "red-blue",
-        "pink-blue",
-        "yellow-pink",
-        "green-yellow",
+        'green-yellow',
+        'yellow-pink',
+        'pink-blue',
+        'red-blue',
+        'red-blue',
+        'pink-blue',
+        'yellow-pink',
+        'green-yellow',
       ],
     };
   },
@@ -131,40 +149,45 @@ export default {
     await this.fetchSingleModule(module_id);
   },
   methods: {
-    ...mapActions(["fetchSingleModule"]),
+    fetchSingleModule() {
+      return this.modulesStore.fetchSingleModule;
+    },
     backSlide(index) {
       this.$refs.mySwiperRef[index].$swiper.slidePrev();
     },
     nextSlide(index) {
       this.$refs.mySwiperRef[index].$swiper.slideNext();
     },
-    getAllClasses(category){
+    getAllClasses(category) {
       return category.class_set.length;
     },
-    getAllCompletedClasses(category){
+    getAllCompletedClasses(category) {
       const number = category.class_set.reduce((acumulator, lesson) => {
         if (lesson.lesson_monitoring.watched) acumulator++;
         return acumulator;
       }, 0);
 
       return number;
-    }
+    },
   },
   computed: {
-    ...mapGetters(['currentModule']),
-    ...mapState({
-      loading: (state) => state.Modules.loadingSingleModule,
-      modules: (state) => state.Modules.modules,
-    }),
+    currentModule() {
+      return this.modulesStore.currentModule;
+    },
+    loading() {
+      return this.modulesStore.loadingSingleModule;
+    },
+    modules() {
+      return this.modulesStore.modules;
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
 .section__item {
-
-  &:nth-child(1){
-      margin-top: $unnnic-inline-lg;
+  &:nth-child(1) {
+    margin-top: $unnnic-inline-lg;
   }
 
   &__header {

@@ -28,45 +28,47 @@
 </template>
 
 <script>
-import Banner from "@/components/Banner.vue";
-import { mapState } from "vuex";
+import { useModulesStore } from '@/store/modules';
+import Banner from '@/components/Banner.vue';
+
 export default {
   data() {
     return {
+      modulesStore: useModulesStore(),
       colors: [
-        "green-yellow",
-        "yellow-pink",
-        "pink-blue",
-        "red-blue",
-        "red-blue",
-        "pink-blue",
-        "yellow-pink",
-        "green-yellow",
+        'green-yellow',
+        'yellow-pink',
+        'pink-blue',
+        'red-blue',
+        'red-blue',
+        'pink-blue',
+        'yellow-pink',
+        'green-yellow',
       ],
-      name: "",
+      name: '',
     };
   },
+  components: {
+    Banner,
+  },
   computed: {
-    ...mapState({
-      modules: (state) => state.Modules.modules,
-    }),
+    modules() {
+      return this.modulesStore.modules;
+    },
   },
   mounted() {
-    window.addEventListener("message", (event) => {
-      if (event.data?.event === "userInfo") {
+    window.addEventListener('message', (event) => {
+      if (event.data?.event === 'userInfo') {
         this.name = event.data.first_name;
       }
     });
 
     window.parent.postMessage(
       {
-        event: "getUserInfo",
+        event: 'getUserInfo',
       },
-      "*"
+      '*',
     );
-  },
-  components: {
-    Banner,
   },
 };
 </script>

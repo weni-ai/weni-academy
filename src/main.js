@@ -1,12 +1,13 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+
 import App from './App.vue';
 import router from './router';
-import store from './store';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import LogRocket from 'logrocket';
 
 import Unnnic from './utils/plugins/UnnnicSystem';
+import '@weni/unnnic-system/dist/style.css';
 
 // import style (>= Swiper 6.x)
 import 'swiper/swiper-bundle.css';
@@ -19,16 +20,15 @@ LogRocket.init(getEnv('VUE_APP_LOGROCKET_ID'), {
 });
 
 const app = createApp(App);
-
 const pinia = createPinia();
 
 app.use(router);
-app.use(store);
 app.use(pinia);
 app.use(VueAwesomeSwiper);
 app.use(Unnnic);
 
 app.mount('#app');
+
 function enableLinkTranslations() {
   let connectBaseURL = '';
 

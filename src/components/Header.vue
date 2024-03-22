@@ -1,6 +1,6 @@
 <template>
   <header class="unnnic-grid-span-12">
-    <unnnicBreadcrumb
+    <UnnnicBreadcrumb
       :crumbs="breadcrumbs"
       @crumbClick="handleCrumbClick"
     />
@@ -8,22 +8,29 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { useHeaderStore } from '@/store/header';
 
 export default {
+  data() {
+    return {
+      headerStore: useHeaderStore(),
+    };
+  },
   methods: {
     handleCrumbClick(crumb) {
       this.$router.push(crumb.path);
     },
   },
   computed: {
-    ...mapGetters(['breadcrumbs']),
-  }
+    breadcrumbs() {
+      return this.headerStore.breadcrumbs;
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
-  header {
-    padding: 0 $unnnic-spacing-stack-md;
-  }
+header {
+  padding: 0 $unnnic-spacing-stack-md;
+}
 </style>

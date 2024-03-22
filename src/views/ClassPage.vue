@@ -17,16 +17,35 @@
             <div class="title">Suas anotações</div>
 
             <div class="action">
-              <unnnic-icon v-if="isSavingNotes" class="spin" icon="loading-circle-1" scheme="neutral-dark" />
+              <UnnnicIcon
+                v-if="isSavingNotes"
+                class="spin"
+                icon="loading-circle-1"
+                scheme="neutral-dark"
+              />
             </div>
           </div>
 
-          <div class="placeholder" v-if="!isNotesFocusedOrFilled">
-            <span class="edit-button" @click="$refs.notesInput.focus()">Clique aqui</span> para começar a fazer anotações.
+          <div
+            class="placeholder"
+            v-if="!isNotesFocusedOrFilled"
+          >
+            <span
+              class="edit-button"
+              @click="$refs.notesInput.focus()"
+              >Clique aqui</span
+            >
+            para começar a fazer anotações.
           </div>
 
           <div class="content">
-            <textarea ref="notesInput" v-model="notes" @input="saveNotes" @focus="isNotesFocused = true" @blur="isNotesFocused = false"></textarea>
+            <textarea
+              ref="notesInput"
+              v-model="notes"
+              @input="saveNotes"
+              @focus="isNotesFocused = true"
+              @blur="isNotesFocused = false"
+            ></textarea>
           </div>
         </div>
 
@@ -38,13 +57,16 @@
             </div>
 
             <div class="average-rating">
-              <unnnic-star-rating
+              <UnnnicStarRating
                 v-model="currentClass.average_rating"
-                show-value
+                showValue
                 readonly
               />
 
-              <div class="leave-a-comment" @click="goToCommentInput">
+              <div
+                class="leave-a-comment"
+                @click="goToCommentInput"
+              >
                 Deixe um comentário
               </div>
             </div>
@@ -57,15 +79,21 @@
             </div>
             
           --></div>
-          <unnnic-tab v-model="currentTab" :tabs="['overview'/* , 'materials' */, 'comments']">
-            <template slot="tab-head-overview">Visão Geral</template>
-            <template slot="tab-panel-overview">
+          <UnnnicTab
+            v-model="currentTab"
+            :tabs="['overview' /* , 'materials' */, 'comments']"
+          >
+            <template v-slot:tab-head-overview>Visão Geral</template>
+            <template v-slot:tab-panel-overview>
               <div class="overview-container">
-                <unnnicSwitch
+                <UnnnicSwitch
                   size="medium"
                   textRight="Marcar aprendizado como concluído"
                   @input="
-                    toggleCheckClass({ classID: currentClass.id, value: $event })
+                    toggleCheckClass({
+                      classID: currentClass.id,
+                      value: $event,
+                    })
                   "
                   v-model="currentClass.lesson_monitoring.watched"
                   class="toggle-class"
@@ -75,32 +103,40 @@
               </div>
             </template>
 
-            <template slot="tab-head-materials">Materiais de Apoio</template>
-            <template slot="tab-panel-materials">
-              <div v-for="(material, index) in materials" :key="index">
-                <unnnic-icon v-if="material.type === 'pdf'" icon="office-file-pdf-1-1" />
+            <template v-slot:tab-head-materials>Materiais de Apoio</template>
+            <template v-slot:tab-panel-materials>
+              <div
+                v-for="(material, index) in materials"
+                :key="index"
+              >
+                <UnnnicIcon
+                  v-if="material.type === 'pdf'"
+                  icon="office-file-pdf-1-1"
+                />
                 {{ material.title }}
               </div>
             </template>
 
-            <template slot="tab-head-comments">Comentários ({{ comments.length }})</template>
-            <template slot="tab-panel-comments">
-              <unnnic-input
+            <template v-slot:tab-head-comments
+              >Comentários ({{ comments.length }})</template
+            >
+            <template v-slot:tab-panel-comments>
+              <UnnnicInput
                 label="Deixe um comentário"
                 v-model="comment"
                 :disabled="creatingComment"
                 size="md"
                 placeholder="Um bom comentário pode ajudar outras pessoas que estão aprendendo :)"
-                icon-right="send-email-3-1"
-                icon-right-clickable
+                iconRight="send-email-3-1"
+                iconRightClickable
                 @icon-right-click="createComment"
                 @keydown.enter="createComment"
                 class="comment-input"
                 ref="comment-input"
-              ></unnnic-input>
-              
+              ></UnnnicInput>
+
               <div class="comments-container">
-                <unnnic-comment
+                <UnnnicComment
                   v-for="comment in comments"
                   :key="comment.id"
                   :title="comment.name"
@@ -108,52 +144,80 @@
                   :text="comment.text"
                   class="comment"
                 >
-                  <img
-                    slot="avatar"
-                    :src="comment.avatar"
-                  />
+                  <template v-slot:avatar>
+                    <img :src="comment.avatar" />
+                  </template>
 
-                  <unnnic-dropdown v-if="connectUserEmail === comment.name" slot="actions" class="comment-options">
-                    <unnnic-icon-svg
-                      slot="trigger"
-                      icon="navigation-menu-vertical-1"
-                      size="sm"
-                      scheme="neutral-clean"
-                    />
+                  <template v-slot:actions>
+                    <UnnnicDropdown
+                      v-if="connectUserEmail === comment.name"
+                      class="comment-options"
+                    >
+                      <template v-slot:trigger>
+                        <UnnnicIconSvg
+                          icon="navigation-menu-vertical-1"
+                          size="sm"
+                          scheme="neutral-clean"
+                        />
+                      </template>
 
-                    <!-- <div class="option">
+                      <!-- <div class="option">
                       <unnnic-icon icon="pencil-write-1" size="sm" scheme="neutral-dark" />
                       Editar comentário
                     </div>
 
                     <div class="divider"></div> -->
 
-                    <div @click="removeComment(comment.id)" class="option danger">
-                      <unnnic-icon v-if="removingComments.includes(comment.id)" class="spin" size="sm" icon="loading-circle-1" scheme="neutral-dark" />
-                      <unnnic-icon v-else icon="delete-1" size="sm" scheme="feedback-red" />
-                      Excluir comentário
-                    </div>
-                  </unnnic-dropdown>
-                </unnnic-comment>
+                      <div
+                        @click="removeComment(comment.id)"
+                        class="option danger"
+                      >
+                        <UnnnicIcon
+                          v-if="removingComments.includes(comment.id)"
+                          class="spin"
+                          size="sm"
+                          icon="loading-circle-1"
+                          scheme="neutral-dark"
+                        />
+                        <UnnnicIcon
+                          v-else
+                          icon="delete-1"
+                          size="sm"
+                          scheme="feedback-red"
+                        />
+                        Excluir comentário
+                      </div>
+                    </UnnnicDropdown>
+                  </template>
+                </UnnnicComment>
               </div>
             </template>
-          </unnnic-tab>
+          </UnnnicTab>
         </div>
 
         <div class="right-side">
           <div class="mood-rating-container">
-            <unnnic-mood-rating
+            <UnnnicMoodRating
               title="Avalie seu aprendizado nesta aula"
               :value="mood === 0 ? null : mood"
               @input="setMood"
-              :titles-moods="['Decepcionado', 'Insatisfeito', 'Neutro', 'Feliz', 'Produtivo']"
+              :titlesMoods="[
+                'Decepcionado',
+                'Insatisfeito',
+                'Neutro',
+                'Feliz',
+                'Produtivo',
+              ]"
             />
           </div>
 
-          <div v-if="nextClass" class="next-class-container">
+          <div
+            v-if="nextClass"
+            class="next-class-container"
+          >
             <div class="title">Próxima aula</div>
 
-            <router-link
+            <RouterLink
               :to="{
                 name: 'ClassPage',
                 params: {
@@ -161,14 +225,22 @@
                 },
               }"
             >
-              <unnnic-card-data
+              <UnnnicCardData
                 :title="nextClass.title"
                 :description="nextClass.description"
-                :score="nextClass.average_rating ? nextClass.average_rating.toFixed(1) : null"
-                :info="nextClassCommentsCount !== null ? `(${nextClassCommentsCount} comentários)` : null"
+                :score="
+                  nextClass.average_rating
+                    ? nextClass.average_rating.toFixed(1)
+                    : null
+                "
+                :info="
+                  nextClassCommentsCount !== null
+                    ? `(${nextClassCommentsCount} comentários)`
+                    : null
+                "
                 :checked="nextClass.lesson_monitoring.watched"
               />
-            </router-link>
+            </RouterLink>
           </div>
         </div>
       </div>
@@ -199,15 +271,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { useModulesStore } from '@/store/modules';
 import moment from 'moment';
 import 'moment/locale/pt-br';
 moment.locale('pt-br');
 
 export default {
-  name: "Home",
+  name: 'ClassPage',
   data() {
     return {
+      modulesStore: useModulesStore(),
       hasMovie: true,
       text: `<h1>Titulo</h1>\r\n\r\n<p>sdads asdas</p>\r\n\r\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In porta sagittis ligula at egestas. Vivamus vestibulum diam sit amet massa viverra, quis dapibus diam pellentesque. Pellentesque fermentum efficitur lorem sit amet sollicitudin. Sed magna velit, pellentesque sit amet aliquet quis, dapibus vitae erat. Nullam imperdiet mollis odio eu ultrices. Duis imperdiet volutpat dolor, vitae imperdiet turpis elementum at. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ut ornare nunc.</p>\r\n\r\n<p>Sed quam lorem, ultricies vitae sapien a, vehicula malesuada arcu. Phasellus luctus lobortis enim eget consequat. Praesent mattis quam urna, tempor ornare sapien tincidunt ac. Pellentesque consectetur volutpat velit vel tincidunt. Vestibulum vestibulum fringilla malesuada. Curabitur sit amet ex eu nunc feugiat efficitur. Morbi hendrerit ipsum sed neque accumsan, ut ultricies turpis commodo. Cras dapibus nisi vel interdum laoreet. Sed varius, arcu eu finibus imperdiet, ligula eros luctus augue, quis feugiat justo magna non enim.</p>\r\n\r\n<p>Sed eget bibendum diam, nec vehicula augue. Quisque consectetur commodo finibus. Aenean commodo ante nec tempus auctor. Aenean vel aliquet magna. Mauris aliquam odio sit amet rhoncus ultricies. Praesent lobortis, enim a placerat gravida, dolor ante suscipit libero, ac aliquet dui tellus vitae magna. Fusce ut fermentum urna. Integer nunc nunc, volutpat porttitor tincidunt condimentum, blandit eget turpis. Sed pharetra scelerisque laoreet. Nulla facilisi. Aliquam ultrices non magna sit amet mattis. Sed feugiat dui at lacus finibus, sed tincidunt lorem fermentum. Curabitur molestie pharetra rhoncus. Etiam egestas nunc sed tortor dapibus feugiat vel ac felis.</p>\r\n\r\n<p>&nbsp;</p>`,
       comments: [],
@@ -217,16 +290,20 @@ export default {
       comment: '',
       creatingComment: false,
 
-      materials: [{
-        title: 'Nome do arquivo.docx',
-        type: 'doc',
-      }, {
-        title: 'Nome do arquivo.pdf',
-        type: 'pdf',
-      }, {
-        title: 'Nome do link',
-        type: 'link',
-      }],
+      materials: [
+        {
+          title: 'Nome do arquivo.docx',
+          type: 'doc',
+        },
+        {
+          title: 'Nome do arquivo.pdf',
+          type: 'pdf',
+        },
+        {
+          title: 'Nome do link',
+          type: 'link',
+        },
+      ],
 
       mood: 0,
 
@@ -248,30 +325,44 @@ export default {
   },
 
   mounted() {
-    window.addEventListener("message", (event) => {
-      if (event.data?.event === "userInfo") {
+    window.addEventListener('message', (event) => {
+      if (event.data?.event === 'userInfo') {
         this.connectUserEmail = event.data.email;
       }
     });
 
     window.parent.postMessage(
       {
-        event: "getUserInfo",
+        event: 'getUserInfo',
       },
-      "*"
+      '*',
     );
   },
 
   methods: {
-    ...mapActions([
-      "toggleCheckClass",
-      'setClassMood',
-      'getClassAnnotation',
-      'setClassAnnotation',
-      'createClassComment',
-      'removeClassComment',
-      'getClassComments',
-    ]),
+    toggleCheckClass(classId, value) {
+      return this.modulesStore.toggleCheckClass({ classId, value });
+    },
+
+    setClassMood(classId, mood) {
+      return this.modulesStore.setClassMood({ classId, mood });
+    },
+
+    setClassAnnotation(classId, annotation) {
+      return this.modulesStore.setClassAnnotation({ classId, annotation });
+    },
+
+    createClassComment(classId, text) {
+      return this.modulesStore.createClassComment({ classId, text });
+    },
+
+    removeClassComment(classId, commentId) {
+      return this.modulesStore.removeClassComment({ classId, commentId });
+    },
+
+    getClassComments(classId) {
+      return this.modulesStore.getClassComments(classId);
+    },
 
     init() {
       this.mood = this.currentClass.lesson_monitoring.mood;
@@ -292,15 +383,14 @@ export default {
         this.comments = data.comments.reverse();
       });
 
-      const classes =
-          this.currentModule.category_set
-            .map((categories) => categories.class_set)
-            .flat();
-        
-      const indexCurrentClass =
-        classes
-          .findIndex((classItem) => classItem.id === this.currentClass.id);
-      
+      const classes = this.currentModule.category_set
+        .map((categories) => categories.class_set)
+        .flat();
+
+      const indexCurrentClass = classes.findIndex(
+        (classItem) => classItem.id === this.currentClass.id,
+      );
+
       if (indexCurrentClass !== -1 && classes[indexCurrentClass + 1]) {
         this.nextClass = classes[indexCurrentClass + 1];
 
@@ -334,7 +424,10 @@ export default {
 
       this.removingComments.splice(this.removingComments.indexOf(commentId), 1);
 
-      this.comments.splice(this.comments.findIndex(({ id }) => id === commentId), 1);
+      this.comments.splice(
+        this.comments.findIndex(({ id }) => id === commentId),
+        1,
+      );
     },
 
     async setMood($event) {
@@ -349,7 +442,8 @@ export default {
           mood,
         });
 
-        this.mood = this.currentClass.lesson_monitoring.mood = response.data.mood;
+        this.mood = this.currentClass.lesson_monitoring.mood =
+          response.data.mood;
       } catch (error) {
         this.mood = initialValue;
       }
@@ -409,7 +503,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["currentClass", "currentModule"]),
+    currentClass() {
+      return this.modulesStore.currentClass;
+    },
+
+    currentModule() {
+      return this.modulesStore.currentModule;
+    },
 
     isNotesFocusedOrFilled() {
       return this.isNotesFocused || this.notes;
@@ -426,7 +526,7 @@ export default {
       handler() {
         this.init();
       },
-    }
+    },
   },
 };
 </script>
@@ -472,7 +572,7 @@ h2 {
 
     &.yellowed {
       // background-color: $unnnic-color-aux-baby-yellow;
-      background-color: #FBF7C9;
+      background-color: #fbf7c9;
       outline: none;
     }
 
@@ -658,7 +758,7 @@ aside {
     margin-bottom: $unnnic-spacing-stack-sm;
   }
 
-  ::v-deep  {
+  ::v-deep {
     p {
       font-family: $unnnic-font-family-secondary;
       font-weight: $unnnic-font-weight-regular;
@@ -749,11 +849,11 @@ aside {
 }
 
 @keyframes spin {
-    from {
-        transform:rotate(0deg);
-    }
-    to {
-        transform:rotate(360deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
