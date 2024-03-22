@@ -1,5 +1,8 @@
 <template>
-  <div class="link" tabindex="0">
+  <div
+    tabindex="0"
+    class="link"
+  >
     <div
       :class="[
         'banner',
@@ -8,8 +11,14 @@
       ]"
     >
       <div :class="['banner__content']">
-        <p v-if="!expanded" class="banner__content-icon">
-          <img :src="currentModule.image" alt="Module icon" />
+        <p
+          v-if="!expanded"
+          class="banner__content-icon"
+        >
+          <img
+            :src="currentModule.image"
+            alt="Module icon"
+          />
         </p>
         <h3>{{ currentModule.title }}</h3>
         <p
@@ -21,19 +30,28 @@
           {{ currentModule.description }}
         </p>
 
-        <div v-if="currentModule.watched_percentage > 0" class="progress-bar">
+        <div
+          v-if="currentModule.watched_percentage > 0"
+          class="progress-bar"
+        >
           <div
             class="progress"
             :style="`width:${currentModule.watched_percentage}%`"
           />
         </div>
-        <p v-if="expanded" class="percentage-info">
-          {{`${currentModule.watched_percentage}% completo` }}
+        <p
+          v-if="expanded"
+          class="percentage-info"
+        >
+          {{ `${currentModule.watched_percentage}% completo` }}
         </p>
       </div>
-      <div class="hover" v-if="!expanded">
+      <div
+        class="hover"
+        v-if="!expanded"
+      >
         <div class="links">
-          <router-link
+          <RouterLink
             :to="{
               name: 'Home',
               params: {
@@ -41,11 +59,11 @@
               },
             }"
           >
-            <unnnic-button type="secondary">Abrir</unnnic-button>
-          </router-link>
+            <UnnnicButton type="secondary">Abrir</UnnnicButton>
+          </RouterLink>
         </div>
         <!-- <unnnic-button type="terciary">gerar certificado</unnnic-button> -->
-        <router-link
+        <RouterLink
           v-if="resumeWhereILeft(currentModule)"
           class="continue__class"
           :to="{
@@ -58,7 +76,7 @@
           }"
         >
           Continuar de onde parei →
-        </router-link>
+        </RouterLink>
       </div>
     </div>
   </div>
@@ -66,7 +84,8 @@
 
 <script>
 export default {
-  name: "Banner",
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Banner',
   props: {
     expanded: {
       type: Boolean,
@@ -74,7 +93,7 @@ export default {
     },
     bgGradient: {
       type: String,
-      default: "green-yellow",
+      default: 'green-yellow',
     },
     currentModule: {
       type: Object,
@@ -87,7 +106,7 @@ export default {
         (acumulator, current) => {
           return acumulator.concat(current.class_set);
         },
-        []
+        [],
       );
       const lesson = classes?.find((lesson) => {
         return !lesson.lesson_monitoring.watched;
@@ -211,7 +230,9 @@ export default {
   border-radius: $unnnic-border-radius-md;
   background: rgba($unnnic-color-background-carpet, 0.88);
   backdrop-filter: blur(4px);
-  transition: visibility 0s, opacity 0.1s linear;
+  transition:
+    visibility 0s,
+    opacity 0.1s linear;
 
   .links {
     flex: 1;
@@ -266,7 +287,7 @@ export default {
   }
 }
 
-.percentage-info{
+.percentage-info {
   margin-top: $unnnic-spacing-stack-xs;
   font-weight: $unnnic-font-weight-bold;
   color: $unnnic-color-neutral-darkest;

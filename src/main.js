@@ -1,16 +1,18 @@
-import { createApp } from "vue";
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import VueAwesomeSwiper from 'vue-awesome-swiper'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+
+import App from './App.vue';
+import router from './router';
+import VueAwesomeSwiper from 'vue-awesome-swiper';
 import LogRocket from 'logrocket';
 
 import Unnnic from './utils/plugins/UnnnicSystem';
+import '@weni/unnnic-system/dist/style.css';
 
 // import style (>= Swiper 6.x)
-import 'swiper/swiper-bundle.css'
+import 'swiper/swiper-bundle.css';
 
-import getEnv from './utils/env'
+import getEnv from './utils/env';
 
 LogRocket.init(getEnv('VUE_APP_LOGROCKET_ID'), {
   mergeIframes: true,
@@ -18,13 +20,15 @@ LogRocket.init(getEnv('VUE_APP_LOGROCKET_ID'), {
 });
 
 const app = createApp(App);
+const pinia = createPinia();
 
 app.use(router);
-app.use(store);
+app.use(pinia);
 app.use(VueAwesomeSwiper);
 app.use(Unnnic);
 
-app.mount("#app");
+app.mount('#app');
+
 function enableLinkTranslations() {
   let connectBaseURL = '';
 
@@ -37,7 +41,7 @@ function enableLinkTranslations() {
         link.getAttribute('internal-href') || link.getAttribute('href');
       if (
         ['http://', 'https://'].some((initial) =>
-          internalHref.startsWith(initial)
+          internalHref.startsWith(initial),
         )
       ) {
         return;
@@ -60,7 +64,7 @@ function enableLinkTranslations() {
               link.setAttribute('href', dashHref);
             }, 0);
           }
-        })
+        }),
       );
     });
   }
@@ -89,7 +93,7 @@ function enableLinkTranslations() {
     {
       event: 'getConnectBaseURL',
     },
-    '*'
+    '*',
   );
 }
 
